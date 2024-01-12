@@ -3,7 +3,7 @@ from .models import Content, Channel
 
 
 class ContentAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'rating']
+    list_display = ['name', 'slug', 'rating', 'channel']
 
 
 class ChannelAdmin(admin.ModelAdmin):

@@ -9,21 +9,28 @@ class Channel(models.Model):
     title = models.CharField(max_length=250)
     language = models.CharField(max_length=250)
     picture_url = models.URLField(max_length=250, null=True, blank=True)
-    parent = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
+    parent = models.ForeignKey("self", related_name='children', on_delete=models.SET_NULL, null=True, blank=True)
+
 
     def get_all_children(self, include_self=False):
-      r = []
-      if include_self:
-          r.append(self)
-      for c in Channel.objects.filter(parent=self):
-          _r = c.get_all_children(include_self=True)
-          if 0 < len(_r):
-              r.extend(_r)
-      return r
+        answer_list = []
+
+        if include_self:
+            answer_list.append(self)
+
+        for subchannel in Channel.objects.filter(parent=self):
+            if subchannel.contents.exists():
+                ratings = subchannel.contents.values_list('rating', flat=True)
+                print(subchannel.title, '-', sum(ratings))
+
+            answer_list.extend(subchannel.get_all_children(include_self=True))
+
+        return answer_list
     
+
     def __str__(self):
         return self.title
-    
+
 
 
 class Content(models.Model):
@@ -35,7 +42,7 @@ class Content(models.Model):
     slug = models.SlugField(max_length=250, unique=True, null=True, blank=True)
     rating = models.DecimalField(default=1, max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(10)])
     file_url = models.URLField(max_length=250)
-    channel = models.ForeignKey(Channel, related_name='contents', on_delete=models.CASCADE, null=True, blank=True)
+    channel = models.ForeignKey(Channel, related_name='contents', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name 
@@ -45,3 +52,4 @@ class Content(models.Model):
         super().save(*args, **kwargs)
     
     
+ 
