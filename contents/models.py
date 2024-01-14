@@ -1,5 +1,6 @@
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.db import models
+from django.db.models import Sum
 from django.utils.text import slugify
 
 
@@ -10,27 +11,34 @@ class Channel(models.Model):
     language = models.CharField(max_length=250)
     picture_url = models.URLField(max_length=250, null=True, blank=True)
     parent = models.ForeignKey("self", related_name='children', on_delete=models.SET_NULL, null=True, blank=True)
+    active = models.BooleanField(default=True)
 
-
-    def get_all_children(self, include_self=False):
-        answer_list = []
-
-        if include_self:
-            answer_list.append(self)
-
-        for subchannel in Channel.objects.filter(parent=self):
-            if subchannel.contents.exists():
-                ratings = subchannel.contents.values_list('rating', flat=True)
-                print(subchannel.title, '-', sum(ratings))
-
-            answer_list.extend(subchannel.get_all_children(include_self=True))
-
-        return answer_list
-    
-
-    def __str__(self):
+    def __str__(self):  
         return self.title
 
+    def get_all_ratings():
+        for channel in Channel.objects.filter(active=True):
+            total_rating_sum = channel.get_channel_ratings()
+            print(channel, '-', total_rating_sum)
+
+    def get_channel_ratings(self, include_self=False):
+        child_channels = []
+        total_rating_sum = 0
+        stack = [(self, include_self)]
+
+        while stack:
+            node, include_self = stack.pop()
+            if include_self:
+                child_channels.append(node)
+
+            for subchannel in Channel.objects.filter(parent=node).prefetch_related('contents').annotate(total_rating=Sum('contents__rating')):
+                if subchannel.contents.exists():
+                    total_rating_sum += subchannel.total_rating
+
+                stack.append((subchannel, True))
+
+        return total_rating_sum
+            
 
 
 class Content(models.Model):
