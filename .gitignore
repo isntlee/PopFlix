@@ -1,4 +1,5 @@
 .env
+*.csv
 *.pyc
 *.sqlite3
 __pycache__

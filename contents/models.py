@@ -1,18 +1,20 @@
+from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.db import models
 from django.utils.text import slugify
 
 
 
-class Channel(models.Model):
-        
+class Channel(models.Model):    
     title = models.CharField(max_length=250)
     language = models.CharField(max_length=250)
+    active = models.BooleanField(default=True, null=True)
     picture_url = models.URLField(max_length=250, null=True, blank=True)
     parent = models.ForeignKey("self", related_name='children', on_delete=models.SET_NULL, null=True, blank=True)
-
+    
     def __str__(self):  
         return self.title
+    
 
     def get_channel_ratings():
         results = {}
@@ -26,7 +28,7 @@ class Channel(models.Model):
                 channel_avg = subchannel_summed[0] / subchannel_summed[1]
             except IndexError:
                 channel_avg = 0
-                
+
             results[channel.title] = round(channel_avg, 3)
 
         return results
@@ -63,21 +65,20 @@ class Channel(models.Model):
 
 
 class Content(models.Model):
-
     name = models.CharField(max_length=250)
     description = models.TextField(max_length=2500)
     genre = models.CharField(max_length=250)
     authors = models.CharField(max_length=250)
+    file_url = models.URLField(max_length=250)
     slug = models.SlugField(max_length=250, unique=True, null=True, blank=True)
     rating = models.DecimalField(default=1, max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(10)])
-    file_url = models.URLField(max_length=250)
     channel = models.ForeignKey(Channel, related_name='contents', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name 
-
+    
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        self.slug = slugify(self.name)   
         super().save(*args, **kwargs)
     
     
