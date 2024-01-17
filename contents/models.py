@@ -14,7 +14,17 @@ class Channel(models.Model):
     
     def __str__(self):  
         return self.title
-    
+
+    def clean(self):
+        
+        if self.parent:
+            if self.parent.contents.exists():
+                raise ValidationError("If a parent channel has contents, it can't have subchannels")    
+        else: 
+            raise ValidationError("Channels must have contents or subchannels")
+
+        super().clean()
+
 
     def get_channel_ratings():
         results = {}
@@ -77,6 +87,11 @@ class Content(models.Model):
     def __str__(self):
         return self.name 
     
+    def clean(self):
+       if self.channel.children.exists():
+           raise ValidationError("Can't save contents to an active subchannel")
+       super().clean()
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)   
         super().save(*args, **kwargs)
