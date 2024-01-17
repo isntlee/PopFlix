@@ -11,6 +11,7 @@ class Channel(models.Model):
     language = models.CharField(max_length=250)
     active = models.BooleanField(default=True, null=True)
     picture_url = models.URLField(max_length=250, null=True, blank=True)
+    slug = models.SlugField(max_length=250, unique=True, null=True, blank=True)
     parent = models.ForeignKey("self", related_name='children', on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):  
@@ -24,6 +25,10 @@ class Channel(models.Model):
         elif not self.parent:
             raise ValidationError("Can't create a channel without either contents or subchannels") 
         super().clean()
+  
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)   
+        super().save(*args, **kwargs)
 
 
     def get_channel_ratings():
