@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.db import models
+from django.contrib.auth.models import User
 from django.utils.text import slugify
 
 
@@ -15,14 +16,13 @@ class Channel(models.Model):
     def __str__(self):  
         return self.title
 
-    def clean(self):
-        
-        if self.parent:
-            if self.parent.contents.exists():
-                raise ValidationError("If a parent channel has contents, it can't have subchannels")    
-        else: 
-            raise ValidationError("Channels must have contents or subchannels")
+    # Note: work out a solution for adding channels in future, probably request.user.is_superuser. 
 
+    def clean(self):
+        if self.parent and self.parent.contents.exists():
+            raise ValidationError("Can't add a subchannel to a channel with existing contents")
+        elif not self.parent:
+            raise ValidationError("Can't create a channel without either contents or subchannels") 
         super().clean()
 
 
@@ -89,7 +89,7 @@ class Content(models.Model):
     
     def clean(self):
        if self.channel.children.exists():
-           raise ValidationError("Can't save contents to an active subchannel")
+           raise ValidationError("Can't add contents to a channel with existing subchannels")
        super().clean()
 
     def save(self, *args, **kwargs):
