@@ -78,6 +78,20 @@ class Channel(models.Model):
         return answer_list, subchannel_total
     
 
+    def get_all_parents(self, include_self=True):
+        parent_list = []
+        
+        if include_self:
+            parent_list.append(self)
+
+        current_channel = self.parent
+        while current_channel is not None:
+            parent_list.append(current_channel)
+            current_channel = current_channel.parent
+
+        return parent_list
+    
+
 
 class Content(models.Model):
     name = models.CharField(max_length=250)
@@ -92,6 +106,9 @@ class Content(models.Model):
     def __str__(self):
         return self.name 
     
+    def get_channel(self):
+        return self.channel
+    
     def clean(self):
        if self.channel.children.exists():
            raise ValidationError("Can't add contents to a channel with existing subchannels")
@@ -100,6 +117,3 @@ class Content(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)   
         super().save(*args, **kwargs)
-    
-    
- 

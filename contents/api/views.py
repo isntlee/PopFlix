@@ -4,20 +4,22 @@ from .serializers import ChannelSerializer, ContentSerializer
 
 
 class ChannelListView(generics.ListAPIView):
-   queryset = Channel.objects.all()
    serializer_class = ChannelSerializer
 
-
-class ChannelDetailView(generics.RetrieveAPIView):
-   queryset = Channel.objects.all()
-   serializer_class = ChannelSerializer
+   def get_queryset(self):
+      pk = self.kwargs.get('pk', None)
+      if pk is None:
+          return Channel.objects.all()
+      else:
+          return Channel.objects.filter(parent_id=pk)
 
 
 class ContentListView(generics.ListAPIView):
-   queryset = Content.objects.all()
    serializer_class = ContentSerializer
 
-
-class ContentDetailView(generics.RetrieveAPIView):
-   queryset = Content.objects.all()
-   serializer_class = ContentSerializer
+   def get_queryset(self):
+      pk = self.kwargs.get('pk', None)
+      if pk is None:
+          return Content.objects.all()
+      else:
+          return Content.objects.filter(channel_id=pk)
