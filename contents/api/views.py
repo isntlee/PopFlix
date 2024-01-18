@@ -21,6 +21,3 @@ class ContentListView(generics.ListAPIView):
 class ContentDetailView(generics.RetrieveAPIView):
    queryset = Content.objects.all()
    serializer_class = ContentSerializer
-
-
-# To add both content serializers 

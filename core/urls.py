@@ -16,12 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from contents.api.views import ChannelListView, ChannelDetailView, ContentDetailView, ContentListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('channels/', ChannelListView.as_view()),
-    path('channels/<int:pk>/', ChannelDetailView.as_view()),
-    path('contents/', ContentListView.as_view()),
-    path('contents/<int:pk>/', ContentDetailView.as_view()),
+    path('', include('contents.api.urls')),
 ]

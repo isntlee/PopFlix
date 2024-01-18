@@ -5,12 +5,13 @@ from contents.models import Channel, Content
 class ContentSerializer(serializers.ModelSerializer):
    class Meta:
        model = Content
-       fields = ['name', 'slug', 'rating', 'channel']
+       fields = ['name','id', 'slug', 'rating', 'channel']
 
 
 class ChannelSerializer(serializers.ModelSerializer):
-#    content = ContentSerializer(many=True, read_only=True)
+    children = serializers.StringRelatedField(many=True, read_only=True)
+    contents = ContentSerializer('contents', many=True, read_only=True)
 
-   class Meta:
-       model = Channel
-       fields = ['title', 'language', 'slug', 'active', 'parent', 'content']
+    class Meta:
+        model = Channel
+        fields = ['title', 'id', 'language', 'slug', 'active', 'parent', 'contents', 'children']

@@ -6,8 +6,7 @@ import csv
 class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
-        results = Channel.get_channel_ratings()
-        
+        results = Channel.get_channel_ratings()   
         sorted_results = dict(sorted(results.items(), key=lambda item: item[1], reverse=True))
 
         with open('results.csv', 'w') as f:
