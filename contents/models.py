@@ -34,7 +34,7 @@ class Channel(models.Model):
     def get_channel_ratings():
         results = {}
 
-        for channel in Channel.objects.all():
+        for channel in Channel.objects.all(active=True):
             child_channels, subchannel_total = channel.get_all_subchannels()  
             grouped_by_index = zip(*subchannel_total)
             subchannel_summed = [sum(group) for group in grouped_by_index]
@@ -99,6 +99,7 @@ class Content(models.Model):
     genre = models.CharField(max_length=250)
     authors = models.CharField(max_length=250)
     file_url = models.URLField(max_length=250)
+    active = models.BooleanField(default=True, null=True)
     slug = models.SlugField(max_length=250, unique=True, null=True, blank=True)
     rating = models.DecimalField(default=1, max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(10)])
     channel = models.ForeignKey(Channel, related_name='contents', on_delete=models.SET_NULL, null=True, blank=True)
