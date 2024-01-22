@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify
 
 
+# Note: should change the name of parent/children to something more domain correct 
 
 class Channel(models.Model):    
     title = models.CharField(max_length=250)
@@ -82,11 +83,11 @@ class Channel(models.Model):
         parent_list = []
         
         if include_self:
-            parent_list.append(self)
+            parent_list.append(self.title.lower())
 
         current_channel = self.parent
         while current_channel is not None:
-            parent_list.append(current_channel)
+            parent_list.append(current_channel.title.lower())
             current_channel = current_channel.parent
 
         return parent_list

@@ -1,7 +1,7 @@
-from django.urls import path
-from .views import ChannelListView, ContentListView
+from django.urls import path, re_path
+from .views import ListView, DetailView
 
 urlpatterns = [
-    path('channels/<str:slug>', ChannelListView.as_view()),
-    path('contents/<int:pk>', ContentListView.as_view()),
+    re_path(r'^(?P<path>.*)/$', ListView.as_view()),
+    re_path(r'^(?P<path>.*)/$', DetailView.as_view(), name='content_detail'),
 ]
