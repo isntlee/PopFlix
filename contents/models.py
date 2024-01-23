@@ -27,70 +27,24 @@ class Channel(models.Model):
             raise ValidationError("Can't create a channel without either contents or subchannels") 
         super().clean()
   
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)   
         super().save(*args, **kwargs)
 
 
-    def get_channel_ratings():
-        results = {}
-
-        for channel in Channel.objects.all(active=True):
-            child_channels, subchannel_total = channel.get_all_subchannels()  
-            grouped_by_index = zip(*subchannel_total)
-            subchannel_summed = [sum(group) for group in grouped_by_index]
-
-            try:
-                channel_avg = subchannel_summed[0] / subchannel_summed[1]
-            except IndexError:
-                channel_avg = 0
-
-            results[channel.title] = round(channel_avg, 3)
-
-        return results
-
-
-    def get_all_subchannels(self, include_self=True):
-        answer_list = []
-        subchannel_total = []
-        stack = []
+    def get_all_superchannels(self, include_self=True):
+        superchannel_list = [] 
 
         if include_self:
-            stack.append(self)
-
-        while stack:
-            node = stack.pop()    
-            answer_list.append(node)
-
-            if isinstance(node, Channel) and node.contents.exists():
-                if node.contents.exists():
-                    contents_ratings = node.contents.values_list('rating', flat=True) 
-                    channel_ratings = [float(sum(contents_ratings)), len(contents_ratings)]
-                    subchannel_total.append(channel_ratings)
-
-            for subchannel in Channel.objects.filter(parent=node):
-                if subchannel.contents.exists():
-                    contents_ratings = subchannel.contents.values_list('rating', flat=True) 
-                    subchannel_ratings = [float(sum(contents_ratings)), len(contents_ratings)]
-                    subchannel_total.append(subchannel_ratings)
-
-                stack.append(subchannel)    
-
-        return answer_list, subchannel_total
-    
-
-    def get_all_parents(self, include_self=True):
-        parent_list = []
-        
-        if include_self:
-            parent_list.append(self.title.lower())
-
+            superchannel_list.append(self.title.lower())
         current_channel = self.parent
+
         while current_channel is not None:
-            parent_list.append(current_channel.title.lower())
+            superchannel_list.append(current_channel.title.lower())
             current_channel = current_channel.parent
 
-        return parent_list
+        return superchannel_list
     
 
 

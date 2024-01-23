@@ -3,5 +3,4 @@ from .views import ListView, DetailView
 
 urlpatterns = [
     re_path(r'^(?P<path>.*)/$', ListView.as_view()),
-    re_path(r'^(?P<path>.*)/$', DetailView.as_view(), name='content_detail'),
 ]
