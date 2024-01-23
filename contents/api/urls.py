@@ -1,5 +1,5 @@
-from django.urls import path, re_path
-from .views import ListView, DetailView
+from django.urls import re_path
+from .views import ListView
 
 urlpatterns = [
     re_path(r'^(?P<path>.*)/$', ListView.as_view()),

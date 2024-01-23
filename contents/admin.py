@@ -7,7 +7,7 @@ class ContentAdmin(admin.ModelAdmin):
 
 
 class ChannelAdmin(admin.ModelAdmin):
-    list_display = ['title', 'slug', 'parent', 'id']
+    list_display = ['title', 'slug', 'superchannel', 'id']
 
 
 admin.site.register(Content, ContentAdmin)

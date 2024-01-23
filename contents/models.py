@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify
 
 
-# Note: should change the name of parent/children to something more domain correct 
+# Note: should change the name of superchannel/subchannel to something more domain correct 
 
 class Channel(models.Model):    
     title = models.CharField(max_length=250)
@@ -13,7 +13,7 @@ class Channel(models.Model):
     active = models.BooleanField(default=True, null=True)
     picture_url = models.URLField(max_length=250, null=True, blank=True)
     slug = models.SlugField(max_length=250, unique=True, null=True, blank=True)
-    parent = models.ForeignKey("self", related_name='children', on_delete=models.SET_NULL, null=True, blank=True)
+    superchannel = models.ForeignKey("self", related_name='subchannel', on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):  
         return self.title
@@ -21,9 +21,9 @@ class Channel(models.Model):
     # Note: work out a solution for adding channels in future, probably request.user.is_superuser. 
 
     def clean(self):
-        if self.parent and self.parent.contents.exists():
+        if self.superchannel and self.superchannel.contents.exists():
             raise ValidationError("Can't add a subchannel to a channel with existing contents")
-        elif not self.parent:
+        elif not self.superchannel:
             raise ValidationError("Can't create a channel without either contents or subchannels") 
         super().clean()
   
@@ -38,11 +38,11 @@ class Channel(models.Model):
 
         if include_self:
             superchannel_list.append(self.title.lower())
-        current_channel = self.parent
+        current_channel = self.superchannel
 
         while current_channel is not None:
             superchannel_list.append(current_channel.title.lower())
-            current_channel = current_channel.parent
+            current_channel = current_channel.superchannel
 
         return superchannel_list
     
@@ -66,7 +66,7 @@ class Content(models.Model):
         return self.channel
     
     def clean(self):
-       if self.channel.children.exists():
+       if self.channel.subchannel.exists():
            raise ValidationError("Can't add contents to a channel with existing subchannels")
        super().clean()
 

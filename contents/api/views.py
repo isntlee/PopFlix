@@ -3,62 +3,76 @@ from contents.models import Channel, Content
 from .serializers import ChannelSerializer, ContentSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
-
+from rest_framework import status
+from rest_framework.response import Response
 
 # Note: This will have to be refactored, 'thin views, fat models', remember
-# And error handling, input validation
+# And error handling, input validation, get_object_or_404 everywhere 
 
 class ListView(generics.ListAPIView):
     serializer_class = ChannelSerializer
 
-    def get_slugs(self):
-        path = self.kwargs['path']
-        slugs = path.split('/')
-        return [slug.lower() for slug in reversed(slugs) if slug]
-
-
     def dispatch(self, request, *args, **kwargs):
-        self.slugs = self.get_slugs()
+        slugs = self.get_slugs()
+        obj = self.check_url(slugs)
 
-        try:
-            channel_obj = Channel.objects.get(slug=self.slugs[0])
-            if isinstance(channel_obj, Channel):
-                return super().dispatch(request, *args, **kwargs)
-            else:
-                raise Http404("Object is not a Channel.")
-        except ObjectDoesNotExist:
-            try:
-                content_obj = Content.objects.get(slug=self.slugs[0])
-                if isinstance(content_obj, Content):
-                    print('\n\n ### Testing#13', self.kwargs['path'], '\n')
-                    detail_view = DetailView.as_view()
-                    request._content_obj = content_obj
-                    return detail_view(request, *args, **kwargs)
-                else:
-                    raise Http404("Object is not a Content.")
-            except ObjectDoesNotExist:
-                raise Http404("No Channel or Content matches the given query.")
-
-        
+        if isinstance(obj, Channel):
+            return super().dispatch(request, *args, **kwargs)  
+        elif isinstance(obj, Content):  
+            detail_view = DetailView.as_view()
+            request._slug_obj = obj.slug
+            return detail_view(request, *args, **kwargs)
+        else:
+            raise Http404("No Channel or Content matches the given query.")
+     
     def get_queryset(self):  
-        self.slugs = self.get_slugs()
-        pk = Channel.objects.get(slug=self.slugs[0]).pk
+        slugs = self.get_slugs()
+        pk = Channel.objects.get(slug=slugs[0]).pk
 
         if pk is None:
             return Channel.objects.filter(active=True)[:20]
         else:
             return Channel.objects.filter(id=pk)
         
+    def check_url(self, slugs):
+        slug = slugs[0]
+        try:
+            obj = Channel.objects.get(slug=slug)
+            self.check_super_channels(obj, slugs)
+            return obj
+        except Channel.DoesNotExist:
 
-class DetailView(generics.ListAPIView):
-   serializer_class = ContentSerializer
+            try:
+                obj = Content.objects.get(slug=slug)
+                parent = obj.channel
+                content_slugs = slugs[1:]
+                self.check_super_channels(parent, content_slugs)
+                return obj
+            except Content.DoesNotExist:
+                raise Http404("Sorry we cannot find that page, please check the url")
 
-   def get_queryset(self): 
-        content_obj = self.request._content_obj 
-        pk = content_obj.pk
+    def check_super_channels(self, obj, slugs):
+        super_channels = obj.get_all_superchannels()
+        if slugs != super_channels:
+            raise Http404("Sorry we cannot find that page, please check the url")
 
+    def get_slugs(self):
+        path = self.kwargs['path']
+        slugs = path.split('/')
+        return [slug.lower() for slug in reversed(slugs) if slug]
+        
+
+
+class DetailView(generics.RetrieveAPIView):
+    serializer_class = ContentSerializer
+
+    def get_queryset(self): 
+        return Content.objects.filter(active=True)
+
+    def get_object(self):
+        pk = self.kwargs.get('pk')
         if pk is None:
-            return Content.objects.filter(active=True)[:20]
+            return self.get_queryset()[0]
         else:
-            return Content.objects.filter(id=pk)
+            return Content.objects.get(pk=pk)
         

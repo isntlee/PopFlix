@@ -20,7 +20,7 @@ class Command(BaseCommand):
     def get_channel_ratings(self):
         results = {}
 
-        for channel in Channel.objects.all():
+        for channel in Channel.objects.filter(active=True):
             child_channels, subchannel_total = self.get_all_subchannels(channel)  
             grouped_by_index = zip(*subchannel_total)
             subchannel_summed = [sum(group) for group in grouped_by_index]
@@ -53,7 +53,7 @@ class Command(BaseCommand):
                     channel_ratings = [float(sum(contents_ratings)), len(contents_ratings)]
                     subchannel_total.append(channel_ratings)
 
-            for subchannel in Channel.objects.filter(parent=node):
+            for subchannel in Channel.objects.filter(superchannel=node):
                 if subchannel.contents.exists():
                     contents_ratings = subchannel.contents.values_list('rating', flat=True) 
                     subchannel_ratings = [float(sum(contents_ratings)), len(contents_ratings)]

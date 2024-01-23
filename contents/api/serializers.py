@@ -9,14 +9,13 @@ class ContentSerializer(serializers.ModelSerializer):
        fields = ['name','id', 'slug', 'rating', 'channel']
      
 
-
 class ChannelSerializer(serializers.ModelSerializer):
-    children = serializers.SerializerMethodField()
+    subchannel = serializers.SerializerMethodField()
     contents = ContentSerializer('contents', many=True, read_only=True)
 
     class Meta:
         model = Channel
-        fields = ['title', 'id', 'language', 'slug', 'active', 'parent', 'contents', 'children']
+        fields = ['title', 'id', 'language', 'slug', 'active', 'superchannel', 'picture_url', 'subchannel', 'contents']
 
-    def get_children(self, obj):
-        return [{'id': child.id, 'title': child.title} for child in obj.children.all()]
+    def get_subchannel(self, obj):
+        return [{'id': child.id, 'title': child.title, 'picture_url': child.picture_url} for child in obj.subchannel.all()]
