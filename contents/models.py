@@ -7,12 +7,26 @@ from django.utils.text import slugify
 
 # Note: should change the name of superchannel/subchannel to something more domain correct 
 
+
+class Group(models.Model):
+    title = models.CharField(max_length=250)
+    active = models.BooleanField(default=True, null=True)
+    picture_url = models.URLField(max_length=250, null=True, blank=True)
+    slug = models.SlugField(max_length=250, unique=True, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)   
+        super().save(*args, **kwargs)
+
+
+
 class Channel(models.Model):    
     title = models.CharField(max_length=250)
     language = models.CharField(max_length=250)
     active = models.BooleanField(default=True, null=True)
     picture_url = models.URLField(max_length=250, null=True, blank=True)
-    slug = models.SlugField(max_length=250, unique=True, null=True, blank=True)
+    groups = models.ManyToManyField(Group, blank=True)
+    slug = models.SlugField(max_length=250, unique=True, null=True, blank=True) 
     superchannel = models.ForeignKey("self", related_name='subchannel', on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):  
