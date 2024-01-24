@@ -19,7 +19,6 @@ class Command(BaseCommand):
 
     def get_channel_ratings(self):
         results = {}
-
         for channel in Channel.objects.filter(active=True):
             child_channels, subchannel_total = self.get_all_subchannels(channel)  
             grouped_by_index = zip(*subchannel_total)
@@ -46,7 +45,6 @@ class Command(BaseCommand):
         while stack:
             node = stack.pop()    
             answer_list.append(node)
-
             if isinstance(node, Channel) and node.contents.exists():
                 if node.contents.exists():
                     contents_ratings = node.contents.values_list('rating', flat=True) 

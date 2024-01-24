@@ -2,8 +2,7 @@ from rest_framework import serializers
 from contents.models import Channel, Content
 
 
-class ContentSerializer(serializers.ModelSerializer):
-   
+class ContentSerializer(serializers.ModelSerializer):  
    class Meta:
        model = Content
        fields = ['name','id', 'slug', 'rating', 'channel']
