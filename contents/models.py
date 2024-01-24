@@ -1,7 +1,9 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.db import models
-from django.contrib.auth.models import User
+from django.db import transaction
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.text import slugify
 
 
@@ -13,6 +15,9 @@ class Group(models.Model):
     active = models.BooleanField(default=True, null=True)
     picture_url = models.URLField(max_length=250, null=True, blank=True)
     slug = models.SlugField(max_length=250, unique=True, null=True, blank=True)
+
+    def __str__(self):  
+        return self.title
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)   
@@ -37,19 +42,20 @@ class Channel(models.Model):
     def clean(self):
         if self.superchannel and self.superchannel.contents.exists():
             raise ValidationError("Can't add a subchannel to a channel with existing contents")
-        elif not self.superchannel:
-            raise ValidationError("Can't create a channel without either contents or subchannels") 
+        # elif not self.superchannel:
+        #     raise ValidationError("Can't create a channel without either contents or subchannels") 
         super().clean()
   
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)   
         super().save(*args, **kwargs)
+        if self.superchannel:
+            transaction.on_commit(self.add_group_to_superchannels)
 
 
     def get_all_superchannels(self, include_self=True):
         superchannel_list = [] 
-
         if include_self:
             superchannel_list.append(self.title.lower())
         current_channel = self.superchannel
@@ -59,6 +65,35 @@ class Channel(models.Model):
             current_channel = current_channel.superchannel
 
         return superchannel_list
+    
+    
+    def add_group_to_superchannels(self):
+
+        superchannel_list = self.get_all_superchannels(include_self=False)
+
+        print('\n\n Testing#1:', self.title, '--', self.groups.filter(active=True))
+        print('\n\n Testing#2:', superchannel_list)
+
+        channel_objs = Channel.objects.filter(slug__in=superchannel_list)
+
+        for channel_obj in channel_objs:
+            channel_obj.groups.add(*self.groups.all(active=True))
+
+            print('\n\n Testing#3:', channel_obj, '--', channel_obj.groups.all())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 
 

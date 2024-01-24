@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from contents.models import Channel, Content
+from contents.models import Channel, Content, Group
+
+
+class GroupSerializer(serializers.ModelSerializer):  
+   class Meta:
+       model = Group
+       fields = ['title', 'id', 'slug']
 
 
 class ContentSerializer(serializers.ModelSerializer):  
@@ -11,6 +17,7 @@ class ContentSerializer(serializers.ModelSerializer):
 class ChannelSerializer(serializers.ModelSerializer):
     subchannel = serializers.SerializerMethodField()
     contents = ContentSerializer('contents', many=True, read_only=True)
+    groups = GroupSerializer('groups', many=True, read_only=True)
 
     class Meta:
         model = Channel
@@ -18,3 +25,6 @@ class ChannelSerializer(serializers.ModelSerializer):
 
     def get_subchannel(self, obj):
         return [{'id': child.id, 'title': child.title, 'picture_url': child.picture_url} for child in obj.subchannel.all()]
+    
+    def get_group(self, obj):
+        return [{'id': group.id, 'title': group.title, 'slug': group.slug} for group in obj.groups.all()]
