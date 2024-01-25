@@ -2,6 +2,8 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.db import models
 from django.db import transaction
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.text import slugify
 
 
@@ -41,8 +43,8 @@ class Channel(models.Model):
     def clean(self):
         if self.superchannel and self.superchannel.contents.exists():
             raise ValidationError("Can't add a subchannel to a channel with existing contents")
-        elif not self.superchannel:
-            raise ValidationError("Can't create a channel without either contents or subchannels") 
+        # elif not self.superchannel:
+        #     raise ValidationError("Can't create a channel without either contents or subchannels") 
         super().clean()
   
 
@@ -66,15 +68,33 @@ class Channel(models.Model):
         return superchannel_list
     
     
+
+
+
+
     def add_group_to_superchannels(self):
+
         if not self.groups.exists():
             return False
 
         superchannel_list = self.get_all_superchannels(include_self=False)
+
+        # print('\n\n Testing#1:', self.title, '--', self.groups.filter(active=True))
+        # print('\n\n Testing#2:', superchannel_list)
+
         channel_objs = Channel.objects.filter(slug__in=superchannel_list)
+
         for channel_obj in channel_objs:
             channel_obj.groups.add(*self.groups.all())
 
+            # print('\n\n Testing#3:', channel_obj, '--', channel_obj.groups.all())
+
+
+
+
+
+
+    
 
 
 class Content(models.Model):

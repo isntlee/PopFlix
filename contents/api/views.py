@@ -1,5 +1,5 @@
 from rest_framework import generics
-from contents.models import Channel, Content
+from contents.models import Channel, Content, Group
 from .serializers import ChannelSerializer, ContentSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
@@ -12,9 +12,10 @@ from rest_framework.response import Response
 class ListView(generics.ListAPIView):
     serializer_class = ChannelSerializer
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):      
         slugs = self.get_slugs()
         obj = self.check_url(slugs)
+        self.group = request.GET.get('group', None)
 
         if isinstance(obj, Channel):
             return super().dispatch(request, *args, **kwargs)  
@@ -30,10 +31,24 @@ class ListView(generics.ListAPIView):
         pk = Channel.objects.get(slug=slugs[0]).pk
 
         if pk is None:
-            return Channel.objects.filter(active=True)[:20]
+            queryset = Channel.objects.filter(active=True)[:20]
         else:
-            return Channel.objects.filter(id=pk)
+            queryset = Channel.objects.filter(id=pk)
+
+        group = self.request.query_params.get('group', None)
+        if group is not None:  
+            queryset = self.get_group_queryset(group, queryset)
+        return queryset
+
+    def get_group_queryset(self, group_name, queryset):
+        try:
+            group = Group.objects.get(slug=group_name)
+            subchannels = queryset.first().subchannel.all()
+            return subchannels.filter(groups__in=[group])
         
+        except Group.DoesNotExist:
+            return queryset.none()
+    
     def check_url(self, slugs):
         slug = slugs[0]
         try:
@@ -56,7 +71,7 @@ class ListView(generics.ListAPIView):
         if slugs != super_channels:
             raise Http404("Sorry we cannot find that page, please check the url")
 
-    def get_slugs(self):
+    def get_slugs(self):  
         path = self.kwargs['path']
         slugs = path.split('/')
         return [slug.lower() for slug in reversed(slugs) if slug]
