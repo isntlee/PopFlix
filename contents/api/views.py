@@ -1,10 +1,7 @@
 from rest_framework import generics
 from contents.models import Channel, Content, Group
 from .serializers import ChannelSerializer, ContentSerializer
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
-from rest_framework import status
-from rest_framework.response import Response
 
 # Note: This will have to be refactored, 'thin views, fat models', remember
 # And error handling, input validation, get_object_or_404 everywhere 
@@ -12,7 +9,7 @@ from rest_framework.response import Response
 class ListView(generics.ListAPIView):
     serializer_class = ChannelSerializer
 
-    def dispatch(self, request, *args, **kwargs):      
+    def dispatch(self, request, *args, **kwargs): 
         slugs = self.get_slugs()
         obj = self.check_url(slugs)
         self.group = request.GET.get('group', None)

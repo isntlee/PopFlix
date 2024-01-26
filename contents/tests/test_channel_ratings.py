@@ -14,24 +14,34 @@ class CommandTestCase(TestCase):
         self.content3 = Content.objects.create(channel=self.channel2, name='content_3', rating=4)
         self.content4 = Content.objects.create(channel=self.channel2, name='content_4', rating=2)
 
-
     def tearDown(self):
         Channel.objects.all().delete()
         Content.objects.all().delete()
-
 
     def test_get_channel_ratings(self):
         command = Command()
         results = command.get_channel_ratings()
         self.assertEqual(results['channel_1'], 4.0)
         self.assertEqual(results['channel_2'], 3.0)
+  
+    def test_get_channel_ratings_no_contents(self):
+        self.channel3 = Channel.objects.create(title='channel_3', active=True)
 
+        command = Command()
+        results = command.get_channel_ratings()
+        self.assertEqual(results['channel_3'], 0.0)
 
     def test_get_all_subchannels(self):
         command = Command()
         channels, _ = command.get_all_subchannels(self.channel1)
         self.assertEqual(len(channels), 1)
+   
+    def test_get_all_subchannels_with_subchannels(self):
+        self.subchannel = Channel.objects.create(title='subchannel_1', superchannel=self.channel1)
 
+        command = Command()
+        channels, _ = command.get_all_subchannels(self.channel1)
+        self.assertEqual(len(channels), 2)
 
     def test_command(self):
         call_command('channel_ratings')
