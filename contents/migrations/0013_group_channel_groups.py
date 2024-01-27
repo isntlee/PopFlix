@@ -23,6 +23,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='channel',
             name='groups',
-            field=models.ManyToManyField(blank=True, null=True, to='contents.group'),
+            field=models.ManyToManyField(blank=True, to='contents.group'),
         ),
     ]
