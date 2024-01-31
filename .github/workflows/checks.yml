@@ -1,0 +1,28 @@
+name: Popflix CI
+
+on:
+ push:
+    branches: [ main ]
+ pull_request:
+    branches: [ main ]
+
+jobs:
+ build:
+
+    runs-on: ubuntu-latest
+    env: 
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      DEBUG: ${{ secrets.DEBUG }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: docker_image
+        run: docker build . --file Dockerfile --tag popflix
+
+      - name: docker_container
+        run: docker-compose up web
+
+      - name: run_tests
+        run: |
+          docker exec -it web bash -c "python manage.py test"
