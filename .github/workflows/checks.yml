@@ -18,11 +18,11 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: docker_image
-        run: docker build . --file Dockerfile --tag popflix
+        run: docker build -t popflix . --file Dockerfile
 
       - name: docker_container
-        run: docker-compose up web
+        run: docker-compose up -d
 
       - name: run_tests
         run: |
-          docker exec -it web bash -c "python manage.py test"
+          docker-compose exec web python manage.py test
