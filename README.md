@@ -1,8 +1,9 @@
 
 # **Popflix**
 
-This is a Django REST based media manager designed with an adaptive & hierarchical file structure. Popflix would function as an ideal API back-end for any media manager project whether the key file type was audio, video, text etc, etc. There is a full choice of bonus features including a testing suite, advanced filtering, containerization and CI/CD prebuilt.
+This is a Django REST based media manager designed with an adaptive & hierarchical file structure. Popflix would function as an ideal API back-end for any media manager project whether the key file type was audio, video, text etc, etc. There is a full choice of bonus features including a testing suite, advanced filtering, containerization and CI/CD prebuilt.    
 
+<br>
 
 ## Features
 
@@ -16,13 +17,11 @@ This is a Django REST based media manager designed with an adaptive & hierarchic
 - Category (Groups) options available to each channel/superchannel that can be easily query filtered. 
 
 **Testing suite**
-- Unit testing that covers all project's features with a test coverage of over 93%.
+- Unit testing accomodates all project's features with test coverage of over 93%.
 
+<br>
 
 ## Technologies
-
-- [VS Code](https://code.visualstudio.com//) - Used as core IDE.
-- [GitHub](https://github.com/) - Used as remote storage.
 
 - **Python**    
     - [Python 3.11.0](https://www.python.org/) - Used as base programming language.
@@ -37,8 +36,8 @@ This is a Django REST based media manager designed with an adaptive & hierarchic
     - [Coverage 7.4.1](https://pypi.org/project/coverage/) - Code coverage measurement for Python.
 - **CI/CD**
     - [GitHub Actions](https://github.com/features/actions) - Build, test, and deploy from your remote storage.
-\
 
+<br>
 
 ## Database Design:
 
@@ -88,6 +87,7 @@ Slug | slug | max_length=250, unique=True, null=True, blank=True | SlugField
 Rating | rating | MinValueValidator(0), MaxValueValidator(10) | DecimalField
 Channel | channel | on_delete=models.SET_NULL, null=True, blank=True | ForeignKey
 
+<br>
 
 ## Deployment
 
@@ -142,6 +142,8 @@ Please note - in order to run this project locally on your own system, you will 
     ```
 11. Once the program is running, go to the local link provided and add `/admin` to the end of the url. Here log in with your superuser account.
 
+<br>
+
 ### Dockerized Application
 
 Please note - in order to run this container on your system, you will need this installed:
@@ -161,3 +163,5 @@ Please note - in order to run this container on your system, you will need this 
     ```
     docker-compose down
     ```
+
+    <br>
