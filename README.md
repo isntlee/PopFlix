@@ -1,31 +1,50 @@
 
-# Technologies
+# **Popflix**
 
-- [VS Code](https://code.visualstudio.com//) - Used as my IDE for coding.
-- [GitHub](https://github.com/) - Used as remote storage of my code
+This is a Django REST based media manager designed with an adaptive & hierarchical file structure. Popflix would function as an ideal API back-end for any media manager project whether the key file type was audio, video, text etc, etc. There is a full choice of bonus features including a testing suite, advanced filtering, containerization and CI/CD prebuilt.
 
+
+## Features
+
+**API**
+- Adaptive API allowing completely arbitrary depth of channels/objects.
+
+**Channel rating Utility**
+- Depth-first search algorithm to trace all nodes (channel's ratings), summing them on each branch (superchannel) backtracking to root (origin channel).
+
+**Filtering**
+- Category (Groups) options available to each channel/superchannel that can be easily query filtered. 
+
+**Testing suite**
+- Unit testing that covers all project's features with a test coverage of over 93%.
+
+
+## Technologies
+
+- [VS Code](https://code.visualstudio.com//) - Used as core IDE.
+- [GitHub](https://github.com/) - Used as remote storage.
+
+- **Python**    
+    - [Python 3.11.0](https://www.python.org/) - Used as base programming language.
 - **Django**
     - [Django 4.2.8](https://www.djangoproject.com/) - As python web framework for rapid development.
     - [Django REST 3.14.0](https://www.django-rest-framework.org/) - Django-based toolkit for building Web APIs.
-- **Python**    
-    - [Python 3.11.0](https://www.python.org/) - Used as base language.
-- **Databases**
-    - [SQlite3](https://www.sqlite.org/index.html) - For development database, provided by Django.
+- **Database**
+    - [SQlite3](https://www.sqlite.org/index.html) - For a development database, provided by Django.
 - **Docker**
-    - [Docker](https://www.docker.com/) - Platform designed to help build, share, and run container applications
+    - [Docker](https://www.docker.com/) - Platform designed to help build, share, and run container applications.
 - **Testing**    
-    - [Coverage 7.4.1](https://pypi.org/project/coverage/) - Code coverage measurement for Python
+    - [Coverage 7.4.1](https://pypi.org/project/coverage/) - Code coverage measurement for Python.
 - **CI/CD**
-    - [GitHub Actions](https://github.com/features/actions) - Build, test, and deploy from your remote storage
+    - [GitHub Actions](https://github.com/features/actions) - Build, test, and deploy from your remote storage.
+\
 
 
-# Database Design:
-
-## Databases:
+## Database Design:
 
 - [SQlite3](https://www.sqlite.org/index.html) - For development database, provided by Django.
 
-## Data Models:
+### Data Models:
 
 **Users**
 
@@ -68,19 +87,18 @@ Active | active | default=True, null=True | BooleanField
 Slug | slug | max_length=250, unique=True, null=True, blank=True | SlugField
 Rating | rating | MinValueValidator(0), MaxValueValidator(10) | DecimalField
 Channel | channel | on_delete=models.SET_NULL, null=True, blank=True | ForeignKey
-\
-
-# Deployment
 
 
-## Local Deployment 
+## Deployment
+
+### Local Deployment 
 
 Please note - in order to run this project locally on your own system, you will need the following installed:
 - [Python3](https://www.python.org/) to run the application.
 - [PIP](https://pip.pypa.io/en/stable/) to install app requirements.
 - [GIT](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for version control.
 
-1. Clone the Jellett Gallery repository by either downloading from here or type the following command into your terminal:
+1. Clone the Popflix repository by either downloading from here or type the following command into your terminal:
     ```
     git clone https://github.com/isntlee/PopFlix
     ```
@@ -124,11 +142,10 @@ Please note - in order to run this project locally on your own system, you will 
     ```
 11. Once the program is running, go to the local link provided and add `/admin` to the end of the url. Here log in with your superuser account.
 
+### Dockerized Application
 
-## Dockerized Application
-
-Please note - in order to run this container on your own system, you will this installed:
-- [Docker](https://www.docker.com/) - to build and run this containerized application. Add these commands to your terminal.
+Please note - in order to run this container on your system, you will need this installed:
+- [Docker](https://www.docker.com/) - to build and run this containerized application, add these commands to your terminal.
 
 1. To build (if unbuilt) and start the container:
     ```
