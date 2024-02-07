@@ -5,6 +5,13 @@ This is a Django REST based media manager designed with an adaptive & hierarchic
 
 <br>
 
+- [**Table of Contents:**](#table-of-contents)
+    - [**Features**](#features)
+    - [**Technologies**](#technologies)
+    - [**Database Design**](#database-design)
+    - [**Deployment**](#deployment)
+<br>
+
 ## Features
 
 **API**
