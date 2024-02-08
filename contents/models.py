@@ -23,6 +23,24 @@ class Group(models.Model):
 
 
 
+class ChannelManager(models.Manager):
+    def get_active_channels(self):
+        return self.filter(active=True)[:20]
+
+    def get_channels_by_pk(self, pk):
+        return self.filter(id=pk)
+
+    def get_channels_by_group(self, group_name, queryset):
+        try:
+            group = Group.objects.get(slug=group_name)
+            subchannels = queryset.first().subchannel.all()
+            return subchannels.filter(groups__in=[group])
+        
+        except Group.DoesNotExist:
+            return queryset.none()
+        
+
+
 class Channel(models.Model):    
     title = models.CharField(max_length=250)
     language = models.CharField(max_length=250)
@@ -31,6 +49,7 @@ class Channel(models.Model):
     groups = models.ManyToManyField(Group, blank=True)
     slug = models.SlugField(max_length=250, unique=True, null=True, blank=True)
     superchannel = models.ForeignKey("self", related_name='subchannel', on_delete=models.SET_NULL, null=True, blank=True)
+    objects = ChannelManager()
     
     def __str__(self):  
         return self.title
