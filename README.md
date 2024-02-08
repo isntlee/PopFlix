@@ -94,27 +94,32 @@ Please note - in order to run this project locally on your own system, you will 
     ```
     pip -r requirements.txt.
     ```
-6. Within your IDE create a file where you can store your sensitive information for the app, I would advise an env.py file.
+6.  Create env.py file at root level where you can store your sensitive information for the app. And these details to that file:
     ```
-    from decouple import config
-    SECRET_KEY = config("SECRET_KEY")
-    DEBUG = config("DEBUG")
+    SECRET_KEY = "SECRET_KEY"
+    DEBUG = "DEBUG"
     ```
-7. If you have restarted your machine to activate your environment variables, do not forget to reactivate your virtual environment with the command used at step 4.
+7. Create a new and truly private key, which will be generated in a secret_key.txt file at root level, with this command:
+    ```
+    python core/generate_key.py
+    ```
+8. Now find the SECRET_KEY and DEBUG variables in the core/settings.py file. You'll find two sets of SECRET_KEY and DEBUG variables, commented out and uncommented. You should comment out the uncommented, and vice-versa.
 
-8. Migrate the admin panel models to create your database template with the terminal command
+9. Finally, set the variables in your .env file. Set SECRET_KEY to the text found in secret_key.txt, remember to add '' as it should be a string. Set DEBUG to whatever you prefer, there's no security problems with DEBUG = 'True' in development. Do consider changing for production. 
+
+10. Migrate the admin panel models to create your database template with the terminal command
     ```
     python manage.py migrate
     ```
-9. Create your superuser to access the django admin panel and database with the following command, and then follow the steps to add your admin username and password:
+11. Create your superuser to access the django admin panel and database with the following command, and then follow the steps to add your admin username and password:
     ```
     python manage.py createsuperuser
     ```
-10. You can now run the program locally with the following command: 
+12. You can now run the program locally with the following command: 
     ```
     python manage.py runserver
     ```
-11. Once the program is running, go to the local link provided and add `/admin/` to the end of the url. Here log in with your superuser account.
+13. Once the program is running, go to the local link provided and add `/admin/` to the end of the url. Here log in with your superuser account.
 
 <br>
 

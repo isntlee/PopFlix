@@ -59,7 +59,7 @@ class DetailView(generics.RetrieveAPIView):
         return Content.objects.filter(active=True)
 
     def get_object(self):
-        pk = self.kwargs.get('pk')
+        pk = self.kwargs.get('pk', None)
         if pk is None:
             return self.get_queryset()[0]
         else:
