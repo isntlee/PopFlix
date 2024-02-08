@@ -6,7 +6,6 @@ from django.db import models, transaction
 
 # Note: This will all have to be reviewed/studied
 #       - comments to add, explain superchannel/subchannel
-#       - transaction.atomic context manager should be used for data integrity.
 
 
 class Group(models.Model):
@@ -69,7 +68,7 @@ class Channel(models.Model):
             return False
 
         superchannel_list = self.get_all_superchannels(include_self=False)
-        channel_objs = Channel.objects.filter(slug__in=superchannel_list)
+        channel_objs = Channel.objects.prefetch_related('groups').filter(slug__in=superchannel_list)
 
         for channel_obj in channel_objs:
             channel_obj.groups.add(*self.groups.all())

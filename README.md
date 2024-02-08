@@ -114,7 +114,7 @@ Please note - in order to run this project locally on your own system, you will 
     ```
     python manage.py runserver
     ```
-11. Once the program is running, go to the local link provided and add `/admin` to the end of the url. Here log in with your superuser account.
+11. Once the program is running, go to the local link provided and add `/admin/` to the end of the url. Here log in with your superuser account.
 
 <br>
 

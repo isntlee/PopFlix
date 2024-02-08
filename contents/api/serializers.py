@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from contents.models import Channel, Content, Group
 
-### This will all have to be reviewed/studied
+#Note: This will all have to be reviewed/studied
 
 class GroupSerializer(serializers.ModelSerializer):  
    class Meta:

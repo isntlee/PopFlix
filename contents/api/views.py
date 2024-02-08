@@ -4,10 +4,10 @@ from contents.models import Channel, Content, Group
 from .serializers import ChannelSerializer, ContentSerializer
 
 
-### This will all have to be reviewed/studied
+#Note: This will all have to be reviewed/studied
+#    - this will have to be refactored, 'thin views, fat models', remember
+#    - and error handling, input validation, get_object_or_404 everywhere 
 
-# Note: This will have to be refactored, 'thin views, fat models', remember
-# And error handling, input validation, get_object_or_404 everywhere 
 
 class ListView(generics.ListAPIView):
     serializer_class = ChannelSerializer
