@@ -1,7 +1,8 @@
 from django.core.management.base import BaseCommand
-from contents.models import Channel
 import csv
+from contents.models import Channel
 
+### This will all have to be reviewed/studied
 
 class Command(BaseCommand):
 

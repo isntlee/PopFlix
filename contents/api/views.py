@@ -1,7 +1,10 @@
+from django.http import Http404
 from rest_framework import generics
 from contents.models import Channel, Content, Group
 from .serializers import ChannelSerializer, ContentSerializer
-from django.http import Http404
+
+
+### This will all have to be reviewed/studied
 
 # Note: This will have to be refactored, 'thin views, fat models', remember
 # And error handling, input validation, get_object_or_404 everywhere 

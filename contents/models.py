@@ -1,12 +1,12 @@
+from django.conf import settings
+from django.utils.text import slugify
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator 
-from django.db import models
-from django.db import transaction
-from django.utils.text import slugify
+from django.db import models, transaction
 
-
-# Note: should change the name of superchannel/subchannel to something more domain correct 
-# Note: transaction.atomic context manager should be used for data integrity.
+# Note: This will all have to be reviewed/studied
+#       - comments to add, explain superchannel/subchannel
+#       - transaction.atomic context manager should be used for data integrity.
 
 
 class Group(models.Model):
@@ -30,19 +30,17 @@ class Channel(models.Model):
     active = models.BooleanField(default=True, null=True)
     picture_url = models.URLField(max_length=250, null=True, blank=True)
     groups = models.ManyToManyField(Group, blank=True)
-    slug = models.SlugField(max_length=250, unique=True, null=True, blank=True) 
+    slug = models.SlugField(max_length=250, unique=True, null=True, blank=True)
     superchannel = models.ForeignKey("self", related_name='subchannel', on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):  
         return self.title
 
-    # Note: work out a solution for adding channels in future, probably request.user.is_superuser. 
-
     def clean(self):
         if self.superchannel and self.superchannel.contents.exists():
             raise ValidationError("Can't add a subchannel to a channel with existing contents")
-        # elif not self.superchannel:
-        #     raise ValidationError("Can't create a channel without either contents or subchannels") 
+        elif not self.superchannel:
+            raise ValidationError("Can't create a channel without either contents or subchannels") 
         super().clean()
   
 

@@ -1,7 +1,8 @@
 .env
 .coverage
 .htmlcov
+__pycache__
 *.csv
 *.pyc
 *.sqlite3
-__pycache__
+*.json
