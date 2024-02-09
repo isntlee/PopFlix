@@ -21,6 +21,7 @@ This is a Django REST based media manager designed with an adaptive & hierarchic
 **Channel rating utility**
 - Depth-first search algorithm to trace all nodes (channel's ratings), summing them on each branch (superchannel) backtracking to root (origin channel).
 - To run this management utility, use below command in terminal:
+
     ```
     python manage.py channel_ratings
     ```
@@ -28,6 +29,7 @@ This is a Django REST based media manager designed with an adaptive & hierarchic
 **Filtering**
 - Category (Groups) options available to each superchannel that can be easily query filtered. 
 - Add query statement below as suffix to active superchannel url:
+
     ```
     ?group=name_of_group
     ```
@@ -35,10 +37,12 @@ This is a Django REST based media manager designed with an adaptive & hierarchic
 **Testing suite**
 - Unit testing accomodates all project's features with test coverage of over 93%.
 - To run coverage tests, use this command in terminal:
+
     ```
     coverage run --source='.' manage.py test
     ```
 - Coverage report available with command:
+
     ```
     coverage report
     ```
@@ -76,52 +80,56 @@ Please note - in order to run this project locally on your own system, you will 
     ```
     git clone https://github.com/isntlee/PopFlix
     ```
-2. Navigate to this folder in your terminal.
+2. Stay in current folder. Don't navigate into Popflix yet
 
 3. A virtual environment is recommended for the Python interpreter. Enter the command:
     ```
-    python -m .venv venv
+    python -m venv venv
     ```  
  - _Warning : **This Python command may differ** depending on operating system, the command required could be **python3** or **py**_
 
-4. Initialize the environment by using the following command: 
+4. Navigate into Popflix and initialize the environment by using the following command: 
     ```
-    .venv\bin\activate 
+    ..venv\bin\activate 
     ```
  - _Warning : **This command may differ** depending on your operating system_
 
 5. Install all the requirements and dependancies with the command 
     ```
-    pip -r requirements.txt.
+    pip install -r requirements.txt
     ```
-6.  Create env.py file at root level where you can store your sensitive information for the app. And these details to that file:
+6. Migrate the admin panel models to create your database template with the terminal command
+    ```
+    python manage.py migrate
+    ```
+7. Create your superuser to access the django admin panel and database with the following command:
+    ```
+    python manage.py createsuperuser
+    ```
+8. Enter these details for the initial superuser. Ignore all warnings, don't add an email. Change the User password afterwards as this password is exposed. However, if you plan to add prefactored test data below, you'll need these details to login. Change password afterwards.
+    ```
+    Username = iam_the_law -- Password = 2000
+    ```
+9. You can now run the program locally with the following command: 
+    ```
+    python manage.py runserver
+     ```
+10. Once the program is running, go to the local link provided and add `/admin/` to the end of the url. Here log in with your superuser account.
+
+11. Create env.py file at root level where you can store your sensitive information for the app. And these details to that file:
     ```
     SECRET_KEY = "SECRET_KEY"
     DEBUG = "DEBUG"
     ```
-7. Create a new and truly private key, which will be generated in a secret_key.txt file at root level, with this command:
+12. Create a new and truly private key, which will be generated in a secret_key.txt file at root level, with this command:
     ```
     python core/generate_key.py
     ```
-8. Now find the SECRET_KEY and DEBUG variables in the core/settings.py file. You'll find two sets of SECRET_KEY and DEBUG variables, commented out and uncommented. You should comment out the uncommented, and vice-versa.
+13. Now find the SECRET_KEY and DEBUG variables in the core/settings.py file. You'll find two sets of SECRET_KEY and DEBUG variables, commented out and uncommented. You should comment out the uncommented, and vice-versa.
 
-9. Finally, set the variables in your .env file. Set SECRET_KEY to the text found in secret_key.txt, remember to add '' as it should be a string. Set DEBUG to whatever you prefer, there are no security problems with DEBUG = 'True' in development. Do consider changing for production. 
+14. Finally, set the variables in your .env file. Set SECRET_KEY to the text found in secret_key.txt, remember to add '' as it should be a string. Set DEBUG to whatever you prefer, there are no security problems with DEBUG = 'True' in development. Do consider changing for production. 
 
-10. Migrate the admin panel models to create your database template with the terminal command
-    ```
-    python manage.py migrate
-    ```
-11. Create your superuser to access the django admin panel and database with the following command, and then follow the steps to add your admin username and password:
-    ```
-    python manage.py createsuperuser
-    ```
-12. You can now run the program locally with the following command: 
-    ```
-    python manage.py runserver
-    ```
-13. Once the program is running, go to the local link provided and add `/admin/` to the end of the url. Here log in with your superuser account.
-
-14. If you would like to start with Channel/Content test data, then run this command: 
+15. If you would like to start with Channel/Content/User test data, then run this command: 
     ```
     python manage.py loaddata data/popflix_data.json
     ```
@@ -130,20 +138,15 @@ Please note - in order to run this project locally on your own system, you will 
 
 ### Dockerize Application:
 
-Please note - in order to run this container on your system, you will need this installed:
+Please note - in order to run this container on your system, you will need Docker installed on your system. And some working knowledge.
 - [Docker](https://www.docker.com/) - to build and run this containerized application, add these commands to your terminal.
 
-1. To build (if unbuilt) and start the container:
+1. To build (if unbuilt) and start the container in detatched mode:
     ```
-    docker-compose up -d --build
-    ```
-
-2. To run the container:
-    ```
-    docker build -t popflix
+    docker-compose up -d
     ```
 
-3. To stop and remove the container: 
+2. To stop and remove the container: 
     ```
     docker-compose down
     ```

@@ -8,6 +8,7 @@ from django.db import models, transaction
 #       - comments to add, explain superchannel/subchannel
 
 
+
 class Group(models.Model):
     title = models.CharField(max_length=250)
     active = models.BooleanField(default=True, null=True)
@@ -61,7 +62,6 @@ class Channel(models.Model):
             raise ValidationError("Can't create a channel without either contents or subchannels") 
         super().clean()
   
-
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)   
         super().save(*args, **kwargs)

@@ -45,7 +45,7 @@ class ListView(generics.ListAPIView):
     def get_slugs(self):
         path = self.kwargs.get('path') 
         if not path:
-            raise ValueError("URL path cannot be empty, please try again")
+            raise ValueError("URL path can't be empty, please try again")
         
         slugs = path.split('/')
         return [slug.lower() for slug in reversed(slugs) if slug]
