@@ -151,6 +151,11 @@ Please note - in order to run this container on your system, you will need Docke
     docker-compose down
     ```
 
+3. To use relevant local deployment instructions above, prefix the commands with: 
+    ```
+    docker-compose exec web
+    ```
+
 <br>
 
 ## Database Design:
