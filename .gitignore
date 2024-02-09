@@ -5,5 +5,4 @@ __pycache__
 *.csv
 *.pyc
 *.sqlite3
-*.json
 *.txt

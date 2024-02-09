@@ -105,7 +105,7 @@ Please note - in order to run this project locally on your own system, you will 
     ```
 8. Now find the SECRET_KEY and DEBUG variables in the core/settings.py file. You'll find two sets of SECRET_KEY and DEBUG variables, commented out and uncommented. You should comment out the uncommented, and vice-versa.
 
-9. Finally, set the variables in your .env file. Set SECRET_KEY to the text found in secret_key.txt, remember to add '' as it should be a string. Set DEBUG to whatever you prefer, there's no security problems with DEBUG = 'True' in development. Do consider changing for production. 
+9. Finally, set the variables in your .env file. Set SECRET_KEY to the text found in secret_key.txt, remember to add '' as it should be a string. Set DEBUG to whatever you prefer, there are no security problems with DEBUG = 'True' in development. Do consider changing for production. 
 
 10. Migrate the admin panel models to create your database template with the terminal command
     ```
@@ -120,6 +120,11 @@ Please note - in order to run this project locally on your own system, you will 
     python manage.py runserver
     ```
 13. Once the program is running, go to the local link provided and add `/admin/` to the end of the url. Here log in with your superuser account.
+
+14. If you would like to start with Channel/Content test data, then run this command: 
+    ```
+    python manage.py loaddata data/popflix_data.json
+    ```
 
 <br>
 
