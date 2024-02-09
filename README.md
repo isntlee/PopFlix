@@ -80,7 +80,7 @@ Please note - in order to run this project locally on your own system, you will 
     ```
     git clone https://github.com/isntlee/PopFlix
     ```
-2. Stay in current folder. Don't navigate into Popflix yet
+2. Stay in your current folder, don't navigate into Popflix yet
 
 3. A virtual environment is recommended for the Python interpreter. Enter the command:
     ```
@@ -88,17 +88,17 @@ Please note - in order to run this project locally on your own system, you will 
     ```  
  - _Warning : **This Python command may differ** depending on operating system, the command required could be **python3** or **py**_
 
-4. Navigate into Popflix and initialize the environment by using the following command: 
+4. Navigate into Popflix and initialize the virtual environment by using the following command: 
     ```
     ..venv\bin\activate 
     ```
  - _Warning : **This command may differ** depending on your operating system_
 
-5. Install all the requirements and dependancies with the command 
+5. Install all the requirements and dependancies with the command:
     ```
     pip install -r requirements.txt
     ```
-6. Migrate the admin panel models to create your database template with the terminal command
+6. Migrate the admin models to create your database template with the terminal command:
     ```
     python manage.py migrate
     ```
@@ -106,7 +106,7 @@ Please note - in order to run this project locally on your own system, you will 
     ```
     python manage.py createsuperuser
     ```
-8. Enter these details for the initial superuser. Ignore all warnings, don't add an email. Change the User password afterwards as this password is exposed. However, if you plan to add prefactored test data below, you'll need these details to login. Change password afterwards.
+8. Enter these details for the initial superuser. Ignore all warnings, don't add an email. Change the User password afterwards as this password is exposed. However, if you plan to add the prebuilt data below, you'll need these details to login, change User password after that.
     ```
     Username = iam_the_law -- Password = 2000
     ```
@@ -114,20 +114,20 @@ Please note - in order to run this project locally on your own system, you will 
     ```
     python manage.py runserver
      ```
-10. Once the program is running, go to the local link provided and add `/admin/` to the end of the url. Here log in with your superuser account.
+10. Once the program is running, go to localhost and add `/admin/` to the end of the url. Here log in with the initial superuser account.
 
-11. Create env.py file at root level where you can store your sensitive information for the app. And these details to that file:
+11. Create env.py file at root level where you can store your sensitive information for the app. Add these details to that file:
     ```
     SECRET_KEY = "SECRET_KEY"
     DEBUG = "DEBUG"
     ```
-12. Create a new and truly private key, which will be generated in a secret_key.txt file at root level, with this command:
+12. Create a new and truly secret key, which will be generated in a secret_key.txt file at root level, with this command:
     ```
     python core/generate_key.py
     ```
-13. Now find the SECRET_KEY and DEBUG variables in the core/settings.py file. You'll find two sets of SECRET_KEY and DEBUG variables, commented out and uncommented. You should comment out the uncommented, and vice-versa.
+13. Find the SECRET_KEY and DEBUG variables in the core/settings.py file. You'll find two sets of SECRET_KEY and DEBUG variables: commented out and uncommented. You should comment out the uncommented, and vice-versa.
 
-14. Finally, set the variables in your .env file. Set SECRET_KEY to the text found in secret_key.txt, remember to add '' as it should be a string. Set DEBUG to whatever you prefer, there are no security problems with DEBUG = 'True' in development. Do consider changing for production. 
+14. Finally, set the variables in your .env file. Set SECRET_KEY to the text found in secret_key.txt, remember to add '' as it should be a string. Set DEBUG to whatever you prefer, there are no security problems with DEBUG = 'True' in development. Do change for production. 
 
 15. If you would like to start with Channel/Content/User test data, then run this command: 
     ```
@@ -138,8 +138,8 @@ Please note - in order to run this project locally on your own system, you will 
 
 ### Dockerize Application:
 
-Please note - in order to run this container on your system, you will need Docker installed on your system. And some working knowledge.
-- [Docker](https://www.docker.com/) - to build and run this containerized application, add these commands to your terminal.
+Please note - in order to run this container on your system, you will need Docker installed on your system. And, some working knowledge.
+- [Docker](https://www.docker.com/) - to build and run this containerized application, add these commands to your terminal:
 
 1. To build (if unbuilt) and start the container in detatched mode:
     ```
