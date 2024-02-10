@@ -36,7 +36,7 @@ This is a Django REST based media manager designed with an adaptive & hierarchic
     ```
 
 **Testing suite**
-- Unit testing accomodates all project's features with test coverage of over 93%.
+- Unit testing accommodates all project features with test coverage of over 93%.
 - To run coverage tests, use this command in terminal:
 
     ```
@@ -58,7 +58,7 @@ This is a Django REST based media manager designed with an adaptive & hierarchic
     - [Django 4.2.8](https://www.djangoproject.com/) - A Python web framework for rapid development.
     - [Django REST 3.14.0](https://www.django-rest-framework.org/) - Django-based toolkit for building Web APIs.
 - **Database**
-    - [SQlite3](https://www.sqlite.org/index.html) - For a development database, provided by Django.
+    - [SQlite](https://www.sqlite.org/index.html) - For a development database, provided by Django.
 - **Docker**
     - [Docker](https://www.docker.com/) - Platform designed to help build, share, and run container applications.
 - **Testing**    
@@ -172,7 +172,7 @@ The User model utilized for this project is the standard one provided by **`djan
 \
 **Group model**
 
-| Name | Key in db | Validation | Field Type |
+| Name | Key in DB | Validation | Field Type |
 --- | --- | --- | ---
 Title | title | max_length=250 | CharField
 Active | active | default=True, null=True | BooleanField
@@ -182,10 +182,10 @@ Slug | slug | max_length=250, unique=True, null=True, blank=True | SlugField
 \
 **Channel model**
 
-| Name | Key in db | Validation | Field Type |
+| Name | Key in DB | Validation | Field Type |
 --- | --- | --- | ---
 Title | title | max_length=250 | CharField
-Language | Language | max_length=250 | CharField
+Language | language | max_length=250 | CharField
 Active | active | default=True, null=True | BooleanField
 Picture Url | picture_url | max_length=250, null=True, blank=True | URLField
 Groups | groups | blank=True | ManyToManyField
@@ -195,7 +195,7 @@ Superchannel | superchannel | on_delete=models.SET_NULL, null=True, blank=True |
 \
 **Content model**
 
-| Name | Key in db | Validation | Field Type |
+| Name | Key in DB | Validation | Field Type |
 --- | --- | --- | ---
 Name | name | max_length=250 | CharField
 Description | description | max_length=2500 | TextField
