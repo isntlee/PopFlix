@@ -20,8 +20,13 @@ class GroupTestCase(TestCase):
         self.assertEqual(group.slug, "test-group-3")
 
     def test_group_active_default(self):
-        group = Group.objects.create(title="Test Group  5")
+        group = Group.objects.create(title="Test Group 4")
         self.assertTrue(group.active)
+
+    def test_group_picture_url(self):
+        group = Group.objects.create(title="Test Group 5", picture_url="http://example.com/image.jpg")
+        self.assertEqual(group.picture_url, "http://example.com/image.jpg")
+        
 
     def tearDown(self):
         Group.objects.all().delete()
@@ -88,6 +93,10 @@ class ChannelTestCase(TestCase):
         expected_channels = Channel.objects.filter(active=True)[:20]
         self.assertQuerysetEqual(active_channels, expected_channels)
 
+    def test_channel_no_superchannel(self):
+        channel = Channel.objects.create(title="Test Channel No Superchannel", language="English")
+        self.assertIsNone(channel.superchannel)
+
     def tearDown(self):
         Channel.objects.all().delete()
         Content.objects.all().delete()
@@ -117,6 +126,10 @@ class ContentTestCase(TestCase):
     def test_get_channel(self):
         content = Content.objects.get(name="Test Content")
         self.assertEqual(content.get_channel(), content.channel)
+
+    def test_content_rating(self):
+        content = Content.objects.create(name="Test Content 4", genre="Genre", authors="Author", file_url="http://example.com", rating=8.5)
+        self.assertEqual(content.rating,  8.5)
 
     def tearDown(self):
         Content.objects.all().delete()

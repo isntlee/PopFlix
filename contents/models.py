@@ -19,8 +19,14 @@ class Group(models.Model):
         super().save(*args, **kwargs)
 
 
-
 class ChannelManager(models.Manager):
+    """
+    Custom model manager to retrieve and filter Channels.
+
+    The method, get_channels_by_group() filters a given queryset of 
+    channels by a group name.
+    """
+
     def get_active_channels(self):
         return self.filter(active=True)[:20]
 
@@ -37,8 +43,20 @@ class ChannelManager(models.Manager):
             return queryset.none()
         
 
+class Channel(models.Model):
+    """
+    Represents a channel instance.
 
-class Channel(models.Model):    
+    Noteworthy fields: 
+    - 'groups' allows channels to be part of multiple Groups as it's set as a many-to-many relationship
+    - 'superchannel' creates a hierarchical relationship between Channels as foreign key to another Channel/'self'
+
+    Noteworthy methods: 
+    -'save' sets the slug and potentially updates related superchannels' Groups.
+    -'get_all_superchannels' gets a list of all superchannels for a Channel, optionally including the Channel itself.
+    -'add_group_to_superchannels' adds the Channel's Groups to all of its superchannels.
+    """
+
     title = models.CharField(max_length=250)
     language = models.CharField(max_length=250)
     active = models.BooleanField(default=True, null=True)
@@ -108,9 +126,13 @@ class Content(models.Model):
         return self.channel
     
     def clean(self):
-       if self.channel.subchannel.exists():
-           raise ValidationError("Can't add contents to a channel with existing subchannels")
-       super().clean()
+        if not self.channel:
+            raise ValidationError("Can't create contents without a channel")
+        
+        if self.channel.subchannel.exists():
+            raise ValidationError("Can't add contents to a channel with existing subchannels")
+
+        super().clean()
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)   

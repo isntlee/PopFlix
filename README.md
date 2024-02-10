@@ -25,6 +25,7 @@ This is a Django REST based media manager designed with an adaptive & hierarchic
     ```
     python manage.py channel_ratings
     ```
+ - _Warning : **This command may differ** depending on operating system, the command required could be **python3** or **py**_
 
 **Filtering**
 - Category (Groups) options available to each superchannel that can be easily query filtered. 

@@ -4,6 +4,18 @@ from contents.models import Channel
 
 
 class Command(BaseCommand):
+    """
+    A management command that calculates the average rating for each active Channel and its subchannels.
+    It uses depth-first traversal to aggregate subchannel ratings and then calculates averages
+
+    Methods:
+    - `handle` executes the command, calling `get_channel_ratings` and writing the results to a csv file.
+    - `get_channel_ratings` processes each active Channel, computes average ratings including subchannels.
+    - `get_all_subchannels` performs an iterative depth-first traversal of a Channel hierarchy, 
+       collecting and returning all visited Channels and their aggregate ratings, while optionally 
+       including the starting Channel itself.
+    """
+
     def handle(self, *args, **kwargs):
         results = self.get_channel_ratings()   
         sorted_results = dict(sorted(results.items(), key=lambda item: item[1], reverse=True))
@@ -33,13 +45,13 @@ class Command(BaseCommand):
         return results
 
 
-    def get_all_subchannels(self, channnel, include_self=True):
+    def get_all_subchannels(self, channel, include_self=True):
         answer_list = []
         subchannel_total = []
         stack = []
 
         if include_self:
-            stack.append(channnel)
+            stack.append(channel)
 
         while stack:
             node = stack.pop()    

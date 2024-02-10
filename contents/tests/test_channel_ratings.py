@@ -46,7 +46,7 @@ class CommandTestCase(TestCase):
     def test_command(self):
         call_command('channel_ratings')
 
-        with open('results.csv', 'r') as f:
+        with open('results_channel_ratings.csv', 'r') as f:
             reader = csv.reader(f)
             next(reader)
             rows = [row for row in reader if row]

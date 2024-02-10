@@ -6,6 +6,16 @@ from .validators import UrlValidator
 
 
 class ListView(generics.ListAPIView):
+    """
+    A view for listing channels.
+
+    Overridden dispatch method for handling URL validation and routing.
+    Also handles the extraction of a 'group' parameter from the GET request.
+
+    The get_queryset method is overridden to provide a queryset that filters
+    channels based on a 'channel' or an optional 'group' parameter 
+    """
+     
     serializer_class = ChannelSerializer
     paginate_by =  20
 
@@ -21,7 +31,7 @@ class ListView(generics.ListAPIView):
             request._slug_obj = obj.slug
             return detail_view(request, *args, **kwargs)
         else:
-            raise Http404("No Channel or Content matches the given url")
+            raise Http404("Sorry, no Channel or Content matches the given url")
      
 
     def get_queryset(self):  
@@ -42,7 +52,7 @@ class ListView(generics.ListAPIView):
     def get_slugs(self):
         path = self.kwargs.get('path') 
         if not path:
-            raise ValueError("URL path can't be empty, please try again")
+            raise Http404("Sorry we can't find that page, please check the url")
         
         slugs = path.split('/')
         return [slug.lower() for slug in reversed(slugs) if slug]
@@ -61,5 +71,3 @@ class DetailView(generics.RetrieveAPIView):
             return self.get_queryset()[0]
         else:
             return Content.objects.get(pk=pk)
-        
-        
