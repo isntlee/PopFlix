@@ -71,5 +71,3 @@ class Command(BaseCommand):
                 stack.append(subchannel)    
 
         return answer_list, subchannel_total
-
-        

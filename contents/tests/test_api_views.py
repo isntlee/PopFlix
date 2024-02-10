@@ -48,3 +48,4 @@ class DetailViewTestCase(TestCase):
     def tearDown(self):
         Channel.objects.all().delete()
         Content.objects.all().delete()
+
