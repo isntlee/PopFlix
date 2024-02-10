@@ -3,7 +3,6 @@ from contents.models import Group, Channel, Content
 from django.core.exceptions import ValidationError
 
 
-
 class GroupTestCase(TestCase):
     def setUp(self):
         self = Group.objects.create(title="Test Group")
@@ -19,6 +18,10 @@ class GroupTestCase(TestCase):
     def test_group_slug_generation(self):
         group = Group.objects.create(title="Test Group 3")
         self.assertEqual(group.slug, "test-group-3")
+
+    def test_group_active_default(self):
+        group = Group.objects.create(title="Test Group  5")
+        self.assertTrue(group.active)
 
     def tearDown(self):
         Group.objects.all().delete()
@@ -73,6 +76,17 @@ class ChannelTestCase(TestCase):
     def test_channel_slug_generation(self):
         channel = Channel.objects.create(title="Test Channel 4", language="English")
         self.assertEqual(channel.slug, "test-channel-4")
+
+    def test_channel_group_association(self):
+        group = Group.objects.create(title="Test Group 3")
+        channel = Channel.objects.create(title="Test Channel 5", language="English")
+        channel.groups.add(group)
+        self.assertIn(group, channel.groups.all())
+
+    def test_channel_manager_active_channels(self):
+        active_channels = Channel.objects.filter(active=True)
+        expected_channels = Channel.objects.filter(active=True)[:20]
+        self.assertQuerysetEqual(active_channels, expected_channels)
 
     def tearDown(self):
         Channel.objects.all().delete()

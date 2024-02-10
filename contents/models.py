@@ -1,11 +1,7 @@
-from django.conf import settings
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.db import models, transaction
-
-# Note: This will all have to be reviewed/studied
-#       - comments to add, explain superchannel/subchannel
 
 
 

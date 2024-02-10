@@ -52,9 +52,9 @@ This is a Django REST based media manager designed with an adaptive & hierarchic
 ## Technologies:
 
 - **Python**    
-    - [Python 3.11.0](https://www.python.org/) - Used as base programming language.
+    - [Python 3.11.0](https://www.python.org/) - Used as base language.
 - **Django**
-    - [Django 4.2.8](https://www.djangoproject.com/) - As python web framework for rapid development.
+    - [Django 4.2.8](https://www.djangoproject.com/) - A Python web framework for rapid development.
     - [Django REST 3.14.0](https://www.django-rest-framework.org/) - Django-based toolkit for building Web APIs.
 - **Database**
     - [SQlite3](https://www.sqlite.org/index.html) - For a development database, provided by Django.
@@ -90,7 +90,7 @@ Please note - in order to run this project locally on your own system, you will 
 
 4. Navigate into Popflix and initialize the virtual environment by using the following command: 
     ```
-    ..venv\bin\activate 
+    ..\venv\Scripts\Activate.ps1 
     ```
  - _Warning : **This command may differ** depending on your operating system_
 
@@ -151,7 +151,7 @@ Please note - in order to run this container on your system, you will need Docke
     docker-compose down
     ```
 
-3. To use relevant local deployment instructions above, prefix the commands with: 
+3. To use the relevant local deployment instructions above, prefix the commands with: 
     ```
     docker-compose exec web
     ```

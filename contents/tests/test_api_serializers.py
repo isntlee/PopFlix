@@ -1,5 +1,4 @@
 from unittest import TestCase
-from rest_framework.test import APIRequestFactory
 from contents.models import Group, Content, Channel
 from contents.api.serializers import GroupSerializer, ContentSerializer, ChannelSerializer
 
@@ -53,7 +52,6 @@ class ContentSerializerTest(TestCase):
     def tearDown(self):
         Content.objects.all().delete()
 
-# Note: Add the Channel-Group serializer later, cause most time consuming
 
 class ChannelSerializerTest(TestCase):
     def setUp(self):

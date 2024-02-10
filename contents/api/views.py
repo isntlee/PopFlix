@@ -4,13 +4,10 @@ from contents.models import Channel, Content
 from .serializers import ChannelSerializer, ContentSerializer
 from .validators import UrlValidator
 
-#Note: This will all have to be reviewed/studied
-
 
 class ListView(generics.ListAPIView):
     serializer_class = ChannelSerializer
     paginate_by =  20
-
 
     def dispatch(self, request, *args, **kwargs): 
         slugs = self.get_slugs()

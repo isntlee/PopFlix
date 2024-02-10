@@ -2,14 +2,12 @@ from django.core.management.base import BaseCommand
 import csv
 from contents.models import Channel
 
-### This will all have to be reviewed/studied
 
 class Command(BaseCommand):
-
     def handle(self, *args, **kwargs):
         results = self.get_channel_ratings()   
         sorted_results = dict(sorted(results.items(), key=lambda item: item[1], reverse=True))
-        with open('results.csv', 'w') as f:
+        with open('results_channel_ratings.csv', 'w') as f:
             fieldnames = ['Channel Title', 'Average Rating']
             writer = csv.DictWriter(f, fieldnames=fieldnames)
 
@@ -24,7 +22,7 @@ class Command(BaseCommand):
             child_channels, subchannel_total = self.get_all_subchannels(channel)  
             grouped_by_index = zip(*subchannel_total)
             subchannel_summed = [sum(group) for group in grouped_by_index]
-
+            
             try:
                 channel_avg = subchannel_summed[0] / subchannel_summed[1]
             except IndexError:
