@@ -113,9 +113,7 @@ class Channel(models.Model):
 
 class Content(models.Model):
     name = models.CharField(max_length=250)
-    description = models.TextField(max_length=2500)
-    genre = models.CharField(max_length=250)
-    authors = models.CharField(max_length=250)
+    metadata = models.JSONField(null=True, blank=True)
     file_url = models.URLField(max_length=250)
     active = models.BooleanField(default=True, null=True)
     slug = models.SlugField(max_length=250, unique=True, null=True, blank=True)

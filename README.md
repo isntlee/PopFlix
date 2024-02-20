@@ -268,9 +268,7 @@ Superchannel | superchannel | on_delete=models.SET_NULL, null=True, blank=True |
 | Name | Key in DB | Validation | Field Type |
 --- | --- | --- | ---
 Name | name | max_length=250 | CharField
-Description | description | max_length=2500 | TextField
-Genre | genre | max_length=250 | CharField
-Authors | authors | max_length=250 | CharField
+Metadata | metadata | null=True, blank=True | JSONField
 File Url | file_url | max_length=250 | URLField
 Active | active | default=True, null=True | BooleanField
 Slug | slug | max_length=250, unique=True, null=True, blank=True | SlugField
