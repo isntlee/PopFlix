@@ -70,11 +70,14 @@ class Channel(models.Model):
         return self.title
 
     def clean(self):
-        if self.superchannel and self.superchannel.contents.exists():
-            raise ValidationError("Can't add a subchannel to a channel with existing contents")
-        elif not self.superchannel:
-            raise ValidationError("Can't create a channel without either contents or subchannels") 
-        super().clean()
+        if not self.__class__.objects.exists():
+            super().clean()
+        else:
+            if self.superchannel and self.superchannel.contents.exists():
+                raise ValidationError("Can't add a subchannel to a channel with existing contents")
+            elif not self.superchannel:
+                raise ValidationError("Can't create a channel without either contents or subchannels")
+            super().clean()
   
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)   

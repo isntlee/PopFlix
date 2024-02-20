@@ -16,11 +16,14 @@ This is a Django REST based media manager designed with an adaptive & hierarchic
 ## Features:
 
 **API**
-- Adaptive API allowing completely arbitrary depth of channels/objects.
+- Adaptive API allowing completely arbitrary depth of channels/objects, see location:
+    ```
+    contents\api
+    ```
 
-**Channel rating utility**
+**Channel rating command**
 - Depth-first search algorithm to trace all nodes (channel's ratings), summing them on each branch (superchannel) backtracking to root (origin channel).
-- To run this management utility, use below command in terminal:
+- To run this management command, add below to terminal:
 
     ```
     python manage.py channel_ratings
@@ -47,6 +50,73 @@ This is a Django REST based media manager designed with an adaptive & hierarchic
     ```
     coverage report
     ```
+
+<br>
+
+## Explanations:
+These notes develop on the more complex and interesting parts of the project
+
+<br>
+
+**Channel rating command**
+- A management command that calculates the average rating for each active Channel and its subchannels.
+  It uses depth-first traversal to aggregate subchannel ratings and then calculates averages
+
+    Noteworthy methods: 
+    - `handle` executes the command, calling `get_channel_ratings` and writing the results to a csv file.
+    - `get_channel_ratings` processes each active Channel, computes average ratings including subchannels.
+    - `get_all_subchannels` performs an iterative depth-first traversal of a Channel hierarchy, 
+       collecting and returning all visited Channels and their aggregate ratings, while optionally 
+       including the starting Channel itself.
+
+<br>
+
+**API ListView**
+- A view for listing channels with several overrides.
+
+    - Overridden dispatch method for handling URL validation and routing.
+      Also handles the extraction of a `group` parameter from the GET request.
+
+    - The get_queryset method is overridden to provide a queryset that filters
+      channels based on a `channel` or an optional `group` channel parameter.
+
+<br>
+
+**API URL pattern**:
+- URL pattern for the ListView with a dynamic path and optional group parameter.
+
+    - This pattern captures a path and an optional group from the URL, passing them as
+        arguments to the ListView view. The path is required, while the group is optional
+        and can be omitted from the URL. Path is the hierarchy of Channels
+
+<br>
+
+**API URL validator**
+- A utility class for validating URLs against channel and content slugs.
+    
+    - This class provides static methods to check the existence of channels and contents
+      based on the slug and ensures that the URL matches the hierarchy of superchannels.
+
+<br>
+
+**Channel model**
+- Represents a channel instance.
+
+    Noteworthy fields: 
+    - `groups` allows channels to be part of multiple Groups as it's set as a many-to-many relationship.
+    - `superchannel` creates a hierarchical relationship between Channels as foreign key to another Channel/'self'
+
+    Noteworthy methods: 
+    - `save` sets the slug and potentially updates related superchannels' Groups.
+    - `get_all_superchannels` gets a list of all superchannels for a Channel, optionally including the Channel itself.
+    - `add_group_to_superchannels` adds the Channel's Groups to all of its superchannels.
+
+<br>    
+
+ **ChannelManager**:
+- Custom model manager to retrieve and filter Channels.
+
+    - The method, `get_channels_by_group` filters a given queryset of channels by a group name.
 
 <br>
 
