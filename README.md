@@ -61,7 +61,7 @@ These notes develop on the more interesting parts of the project
 **API**
 - To facilitate an arbitrary depth of Channels in the API, the final item in the URL is taken as the 
     key object and searched. The URL path is found retroactively by tracing parent Channels.
-    Filtering for Groups is achieved by checking for a 'Group' channel parameter.
+    Filtering for Groups is achieved by checking for a `group` channel parameter.
 
 <br>
 
