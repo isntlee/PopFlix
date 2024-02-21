@@ -41,7 +41,7 @@ class ContentSerializerTest(TestCase):
 
     def test_contains_expected_fields(self):
         data = self.serializer.data
-        self.assertEqual(set(data.keys()), set(['name', 'id', 'slug', 'rating', 'channel']))
+        self.assertEqual(set(data.keys()), set(['name', 'id', 'slug', 'rating', 'channel', 'metadata']))
 
     def test_content_field_content(self):
         data = self.serializer.data

@@ -76,7 +76,7 @@ class Channel(models.Model):
             if self.superchannel and self.superchannel.contents.exists():
                 raise ValidationError("Can't add a subchannel to a channel with existing contents")
             elif not self.superchannel:
-                raise ValidationError("Can't create a channel without either contents or subchannels")
+                raise ValidationError("Can't create a channel without either contents or a superchannel")
             super().clean()
   
     def save(self, *args, **kwargs):

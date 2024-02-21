@@ -11,7 +11,7 @@ class GroupSerializer(serializers.ModelSerializer):
 class ContentSerializer(serializers.ModelSerializer):  
    class Meta:
        model = Content
-       fields = ['name', 'id', 'slug', 'rating', 'channel']
+       fields = ['name', 'id', 'slug', 'rating', 'channel', 'metadata']
      
 
 class ChannelSerializer(serializers.ModelSerializer):

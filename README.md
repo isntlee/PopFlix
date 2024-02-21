@@ -18,7 +18,7 @@ This is a Django REST based media manager designed with an adaptive & hierarchic
 **API**
 - Adaptive API allowing completely arbitrary depth of channels/objects, see location:
     ```
-    contents\api
+    popflix\contents\api
     ```
 
 **Channel rating command**
@@ -54,7 +54,7 @@ This is a Django REST based media manager designed with an adaptive & hierarchic
 <br>
 
 ## Explanations:
-These notes develop on the more complex and interesting parts of the project
+These notes develop on the more interesting\complex parts of the project
 
 <br>
 
@@ -63,7 +63,7 @@ These notes develop on the more complex and interesting parts of the project
   It uses depth-first traversal to aggregate subchannel ratings and then calculates averages
 
     Noteworthy methods: 
-    - `handle` executes the command, calling `get_channel_ratings` and writing the results to a csv file.
+    - `handle` executes the command, calling "get_channel_ratings()" and writing the results to a csv file.
     - `get_channel_ratings` processes each active Channel, computes average ratings including subchannels.
     - `get_all_subchannels` performs an iterative depth-first traversal of a Channel hierarchy, 
        collecting and returning all visited Channels and their aggregate ratings, while optionally 
