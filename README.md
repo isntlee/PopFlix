@@ -16,13 +16,13 @@ This is a Django REST based media manager designed with an adaptive & hierarchic
 ## Features:
 
 **API**
-- Adaptive API allowing completely arbitrary depth of channels/objects, see location:
+- Adaptive API allowing completely arbitrary depth of Channels/objects, see location:
     ```
     popflix\contents\api
     ```
 
 **Channel rating command**
-- Depth-first search algorithm to trace all nodes (channel's ratings), summing them on each branch (superchannel) backtracking to root (origin channel).
+- Depth-first search algorithm to trace all nodes (Channel's ratings), summing them on each branch (superchannel) backtracking to root (origin Channel).
 - To run this management command, add below to terminal:
 
     ```
@@ -54,34 +54,34 @@ This is a Django REST based media manager designed with an adaptive & hierarchic
 <br>
 
 ## Explanations:
-These notes develop on the more interesting\complex parts of the project
+These notes develop on the more interesting parts of the project
 
 <br>
 
 **API**
-- To facilitate an aribitrary depth of Channels in the API: the final item/slug in the URL is taken as the 
-    key object and searched. The URL path is found retroactively by tracing parent channels.
+- To facilitate an arbitrary depth of Channels in the API, the final item in the URL is taken as the 
+    key object and searched. The URL path is found retroactively by tracing parent Channels.
     Filtering for Groups is achieved by checking for a 'Group' channel parameter.
 
 <br>
 
 **API ListView**
-- A generic view for listing channels with several overrides.
+- A generic view for listing Channels with several overrides.
 
     - Overridden dispatch method for handling URL validation and routing.
       Also handles the extraction of a `group` parameter from the GET request.
 
-    - The get_queryset method is overridden to provide a queryset that filters
-      channels based on a `channel` or an optional `group` channel parameter.
+    - The `get_queryset` method is overridden to provide a queryset that filters
+      Channels based on a `channel` or an optional `group` parameter.
 
 <br>
 
 **API URL pattern**:
-- URL pattern for the ListView with a dynamic path and optional group parameter.
+- URL pattern for the ListView with a dynamic path and optional `group` parameter.
 
-    - This pattern captures a path and an optional group from the URL, passing them as
-      arguments to the ListView view. The path here is the hierarchy of Channels. The
-      path is required, while the group is optional and can be omitted from the URL. 
+    - This pattern captures a path and passes it to the ListView. The path here is the 
+      hierarchy of Channels. The path is required, while the `group` is optional and can be omitted
+      from the URL. 
 
 <br>
 
