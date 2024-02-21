@@ -58,21 +58,15 @@ These notes develop on the more interesting\complex parts of the project
 
 <br>
 
-**Channel rating command**
-- A management command that calculates the average rating for each active Channel and its subchannels.
-  It uses depth-first traversal to aggregate subchannel ratings and then calculates averages
-
-    Noteworthy methods: 
-    - `handle` executes the command, calling "get_channel_ratings()" and writing the results to a csv file.
-    - `get_channel_ratings` processes each active Channel, computes average ratings including subchannels.
-    - `get_all_subchannels` performs an iterative depth-first traversal of a Channel hierarchy, 
-       collecting and returning all visited Channels and their aggregate ratings, while optionally 
-       including the starting Channel itself.
+**API**
+- To facilitate an aribitrary depth of Channels in the API: the final item/slug in the URL is taken as the 
+    key object and searched. The URL path is found retroactively by tracing parent channels.
+    Filtering for Groups is achieved by checking for a 'Group' channel parameter.
 
 <br>
 
 **API ListView**
-- A view for listing channels with several overrides.
+- A generic view for listing channels with several overrides.
 
     - Overridden dispatch method for handling URL validation and routing.
       Also handles the extraction of a `group` parameter from the GET request.
@@ -86,21 +80,34 @@ These notes develop on the more interesting\complex parts of the project
 - URL pattern for the ListView with a dynamic path and optional group parameter.
 
     - This pattern captures a path and an optional group from the URL, passing them as
-        arguments to the ListView view. The path is required, while the group is optional
-        and can be omitted from the URL. Path is the hierarchy of Channels
+      arguments to the ListView view. The path here is the hierarchy of Channels. The
+      path is required, while the group is optional and can be omitted from the URL. 
 
 <br>
 
 **API URL validator**
-- A utility class for validating URLs against channel and content slugs.
+- A utility class for validating URLs against Channel and Content slugs.
     
-    - This class provides static methods to check the existence of channels and contents
+    - This class provides static methods to check the existence of Channels and Contents
       based on the slug and ensures that the URL matches the hierarchy of superchannels.
 
 <br>
 
+**Channel rating command**
+- A management command that calculates the average rating for each active Channel and its subchannels.
+  It uses depth-first traversal to aggregate subchannel ratings and then calculates averages
+
+    Noteworthy methods: 
+    - `handle` executes the command, calling "get_channel_ratings()" and writing the results to a csv file.
+    - `get_channel_ratings` processes each Channel, sums subchannel ratings, calls "get_all_subchannels()".
+    - `get_all_subchannels` performs an iterative depth-first traversal of a Channel hierarchy, 
+       collecting and returning all visited Channels and their aggregate ratings, while optionally 
+       including the starting Channel itself.
+
+<br>
+
 **Channel model**
-- Represents a channel instance.
+- Represents a Channel instance, object hierarchy and Group-Channel relationship set here.
 
     Noteworthy fields: 
     - `groups` allows channels to be part of multiple Groups as it's set as a many-to-many relationship.
@@ -116,7 +123,7 @@ These notes develop on the more interesting\complex parts of the project
  **ChannelManager**:
 - Custom model manager to retrieve and filter Channels.
 
-    - The method, `get_channels_by_group` filters a given queryset of channels by a group name.
+    - `get_channels_by_group` filters a given queryset of Channels by a group name.
 
 <br>
 
