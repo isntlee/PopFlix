@@ -45,19 +45,15 @@ class Command(BaseCommand):
         return results
 
 
-    def get_all_subchannels(self, channel, include_self=True):
+    def get_all_subchannels(self, channel):
         answer_list = []
         subchannel_total = []
-        stack = []
-
-        if include_self:
-            stack.append(channel)
+        stack = [channel]
 
         while stack:
             node = stack.pop()    
             answer_list.append(node)
             if isinstance(node, Channel) and node.contents.exists():
-                if node.contents.exists():
                     contents_ratings = node.contents.values_list('rating', flat=True) 
                     channel_ratings = [float(sum(contents_ratings)), len(contents_ratings)]
                     subchannel_total.append(channel_ratings)
