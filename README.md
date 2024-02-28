@@ -135,11 +135,11 @@ These notes develop on the more interesting parts of the project
     - [Django 4.2.8](https://www.djangoproject.com/) - A Python web framework for rapid development.
     - [Django REST 3.14.0](https://www.django-rest-framework.org/) - Django-based toolkit for building Web APIs.
 - **Database**
-    - [SQlite](https://www.sqlite.org/index.html) - For a development database, provided by Django.
+    - [SQlite3](https://www.sqlite.org/index.html) - For a development database, provided by Django.
 - **Docker**
     - [Docker](https://www.docker.com/) - Platform designed to help build, share, and run container applications.
 - **Testing**    
-    - [Coverage 7.4.1](https://pypi.org/project/coverage/) - Code coverage measurement for Python.
+    - [Coverage](https://pypi.org/project/coverage/) - Code coverage measurement for Python.
 - **CI/CD**
     - [GitHub Actions](https://github.com/features/actions) - Build, test, and deploy from your remote storage.
 
