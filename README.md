@@ -101,8 +101,7 @@ These notes develop on the more interesting parts of the project
     - `handle` executes the command, calling "get_channel_ratings()" and writing the results to a csv file.
     - `get_channel_ratings` processes each Channel, sums subchannel ratings, calls "get_all_subchannels()".
     - `get_all_subchannels` performs an iterative depth-first traversal of a Channel hierarchy, 
-       collecting and returning all visited Channels and their aggregate ratings, while optionally 
-       including the starting Channel itself.
+       collecting and returning all visited Channels and their aggregate ratings.
 
 <br>
 
@@ -115,7 +114,7 @@ These notes develop on the more interesting parts of the project
 
     Noteworthy methods: 
     - `save` sets the slug and potentially updates related superchannels' Groups.
-    - `get_all_superchannels` gets a list of all superchannels for a Channel, optionally including the Channel itself.
+    - `get_all_superchannels` gets a list of all superchannels for a Channel.
     - `add_group_to_superchannels` adds the Channel's Groups to all of its superchannels.
 
 <br>    

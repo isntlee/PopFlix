@@ -12,8 +12,7 @@ class Command(BaseCommand):
     - `handle` executes the command, calling `get_channel_ratings` and writing the results to a csv file.
     - `get_channel_ratings` processes each active Channel, computes average ratings including subchannels.
     - `get_all_subchannels` performs an iterative depth-first traversal of a Channel hierarchy, 
-       collecting and returning all visited Channels and their aggregate ratings, while optionally 
-       including the starting Channel itself.
+       collecting and returning all visited Channels and their aggregate ratings.
     """
 
     def handle(self, *args, **kwargs):
@@ -30,11 +29,11 @@ class Command(BaseCommand):
 
     def get_channel_ratings(self):
         results = {}
-        for channel in Channel.objects.filter(active=True):
-            child_channels, subchannel_total = self.get_all_subchannels(channel)  
-            grouped_by_index = zip(*subchannel_total)
-            subchannel_summed = [sum(group) for group in grouped_by_index]
-            
+        for channel in Channel.objects.filter(active=True): 
+            child_channels, subchannel_total = self.get_all_subchannels(channel)
+            grouped_by_index = zip(*subchannel_total) 
+            subchannel_summed = [sum(group) for group in grouped_by_index] 
+
             try:
                 channel_avg = subchannel_summed[0] / subchannel_summed[1]
             except IndexError:
@@ -46,24 +45,21 @@ class Command(BaseCommand):
 
 
     def get_all_subchannels(self, channel):
-        answer_list = []
-        subchannel_total = []
+        all_subchannels = []
+        subchannel_totals = []
         stack = [channel]
 
         while stack:
-            node = stack.pop()    
-            answer_list.append(node)
+            node = stack.pop()  
+            all_subchannels.append(node)
+
             if isinstance(node, Channel) and node.contents.exists():
-                    contents_ratings = node.contents.values_list('rating', flat=True) 
-                    channel_ratings = [float(sum(contents_ratings)), len(contents_ratings)]
-                    subchannel_total.append(channel_ratings)
+                contents_ratings = node.contents.values_list('rating', flat=True)
+                print('\n\n...contents_ratings', contents_ratings)
+                channel_ratings = [float(sum(contents_ratings)), len(contents_ratings)]
+                subchannel_totals.append(channel_ratings)
 
             for subchannel in Channel.objects.filter(superchannel=node):
-                if subchannel.contents.exists():
-                    contents_ratings = subchannel.contents.values_list('rating', flat=True) 
-                    subchannel_ratings = [float(sum(contents_ratings)), len(contents_ratings)]
-                    subchannel_total.append(subchannel_ratings)
-
                 stack.append(subchannel)    
 
-        return answer_list, subchannel_total
+        return all_subchannels, subchannel_totals
