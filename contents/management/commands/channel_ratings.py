@@ -41,7 +41,7 @@ class Command(BaseCommand):
 
             results[channel.title] = round(channel_avg, 3)
 
-        return results
+        return results 
 
 
     def get_all_subchannels(self, channel):
@@ -55,7 +55,6 @@ class Command(BaseCommand):
 
             if isinstance(node, Channel) and node.contents.exists():
                 contents_ratings = node.contents.values_list('rating', flat=True)
-                print('\n\n...contents_ratings', contents_ratings)
                 channel_ratings = [float(sum(contents_ratings)), len(contents_ratings)]
                 subchannel_totals.append(channel_ratings)
 

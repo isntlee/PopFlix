@@ -28,7 +28,7 @@ class ListView(generics.ListAPIView):
             return super().dispatch(request, *args, **kwargs)  
         elif isinstance(obj, Content):  
             detail_view = DetailView.as_view()
-            request._slug_obj = obj.slug
+            kwargs['pk'] = obj.pk
             return detail_view(request, *args, **kwargs)
         else:
             raise Http404("Sorry, no Channel or Content matches the given url")
