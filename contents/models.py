@@ -31,7 +31,7 @@ class ChannelManager(models.Manager):
         return self.filter(active=True)[:20]
 
     def get_channels_by_pk(self, pk):
-        return self.filter(id=pk)
+        return self.filter(pk=pk)
 
     def get_channels_by_group(self, group_name, queryset):
         try:

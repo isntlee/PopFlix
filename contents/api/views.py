@@ -22,7 +22,6 @@ class ListView(generics.ListAPIView):
     def dispatch(self, request, *args, **kwargs): 
         slugs = self.get_slugs()
         obj = UrlValidator.check_url(slugs)
-        self.group = request.GET.get('group', None)
 
         if isinstance(obj, Channel):
             return super().dispatch(request, *args, **kwargs)  

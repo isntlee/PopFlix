@@ -37,7 +37,7 @@ class ChannelTestCase(TestCase):
     def setUp(self):
         self.group = Group.objects.create(title="Test Group")
         self.channel = Channel.objects.create(title="Test Channel", language="English")
-        self.content = Content.objects.create(name="Test Content", metadata={"metadata": "fucking_meta baby"}, file_url="http://example.com", channel=self.channel)
+        self.content = Content.objects.create(name="Test Content", metadata={"metadata": "meta baby"}, file_url="http://example.com", channel=self.channel)
 
     def test_channel_creation(self):
         channel = Channel.objects.get(title="Test Channel")
@@ -55,7 +55,7 @@ class ChannelTestCase(TestCase):
     def test_channel_clean(self):
         superchannel = Channel.objects.get(title="Test Channel")
         channel = Channel.objects.create(title="Test Channel 3", language="English", superchannel=superchannel)
-        Content.objects.create(name="Test Content 2", metadata={"metadata": "fucking_meta baby"}, file_url="http://example.com", channel=channel)
+        Content.objects.create(name="Test Content 2", metadata={"metadata": "meta baby"}, file_url="http://example.com", channel=channel)
 
         with self.assertRaises(ValidationError):
             channel.clean()
@@ -106,20 +106,20 @@ class ChannelTestCase(TestCase):
 
 class ContentTestCase(TestCase):
     def setUp(self):
-        Content.objects.create(name="Test Content", metadata={"metadata": "fucking_meta baby"}, file_url="http://example.com")
+        Content.objects.create(name="Test Content", metadata={"metadata": "meta baby"}, file_url="http://example.com")
 
     def test_content_creation(self):
         content = Content.objects.get(name="Test Content")
         self.assertEqual(content.name, "Test Content")
-        self.assertEqual(content.metadata, {"metadata": "fucking_meta baby"})
+        self.assertEqual(content.metadata, {"metadata": "meta baby"})
         self.assertEqual(content.file_url, "http://example.com")
 
     def test_content_save(self):
-        content = Content.objects.create(name="Test Content 2", metadata={"metadata": "fucking_meta baby"}, file_url="http://example.com")
+        content = Content.objects.create(name="Test Content 2", metadata={"metadata": "meta baby"}, file_url="http://example.com")
         self.assertEqual(content.slug, "test-content-2")
 
     def test_content_slug_generation(self):
-        content = Content.objects.create(name="Test Content 3", metadata={"metadata": "fucking_meta baby"}, file_url="http://example.com")
+        content = Content.objects.create(name="Test Content 3", metadata={"metadata": "meta baby"}, file_url="http://example.com")
         self.assertEqual(content.slug, "test-content-3")
 
     def test_get_channel(self):
@@ -127,7 +127,7 @@ class ContentTestCase(TestCase):
         self.assertEqual(content.get_channel(), content.channel)
 
     def test_content_rating(self):
-        content = Content.objects.create(name="Test Content 4", metadata={"metadata": "fucking_meta baby"}, file_url="http://example.com", rating=8.5)
+        content = Content.objects.create(name="Test Content 4", metadata={"metadata": "meta baby"}, file_url="http://example.com", rating=8.5)
         self.assertEqual(content.rating,  8.5)
 
     def tearDown(self):
