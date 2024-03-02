@@ -87,11 +87,11 @@ class Channel(models.Model):
 
 
     def get_all_superchannels(self, include_self=True):
-        superchannel_list = [] 
+        superchannel_list = []
         if include_self:
             superchannel_list.append(self.title.lower())
-        current_channel = self.superchannel
 
+        current_channel = self.superchannel
         while current_channel is not None:
             superchannel_list.append(current_channel.title.lower())
             current_channel = current_channel.superchannel
