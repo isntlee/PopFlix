@@ -35,7 +35,8 @@ class ListView(generics.ListAPIView):
 
     def get_queryset(self):  
         slugs = self.get_slugs()
-        pk = Channel.objects.get(slug=slugs[0]).pk
+        channel = Channel.objects.filter(slug=slugs[0]).first()
+        pk = channel.pk if channel else None
         group = self.request.query_params.get('group', None)
 
         if pk is None:
@@ -69,4 +70,4 @@ class DetailView(generics.RetrieveAPIView):
         if pk is None:
             return self.get_queryset()[0]
         else:
-            return Content.objects.get(pk=pk)
+            return Content.objects.filter(pk=pk).first()
