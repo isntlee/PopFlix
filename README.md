@@ -134,11 +134,11 @@ These notes develop on the more interesting parts of the project
     - [Django 4.2.8](https://www.djangoproject.com/) - A Python web framework for rapid development.
     - [Django REST 3.14.0](https://www.django-rest-framework.org/) - Django-based toolkit for building Web APIs.
 - **Database**
-    - [SQlite3](https://www.sqlite.org/index.html) - For a development database, provided by Django.
+    - [SQlite 3.38.4](https://www.sqlite.org/index.html) - For a development database, provided by Django.
+- **Testing**    
+    - [Coverage 7.4.0](https://pypi.org/project/coverage/) - Code coverage measurement for Python.
 - **Docker**
     - [Docker](https://www.docker.com/) - Platform designed to help build, share, and run container applications.
-- **Testing**    
-    - [Coverage](https://pypi.org/project/coverage/) - Code coverage measurement for Python.
 - **CI/CD**
     - [GitHub Actions](https://github.com/features/actions) - Build, test, and deploy from your remote storage.
 
@@ -237,7 +237,7 @@ Please note - in order to run this container on your system, you will need Docke
 
 ## Database Design:
 
-- [SQlite3](https://www.sqlite.org/index.html) - For development database, provided by Django.
+- [SQlite](https://www.sqlite.org/index.html) - For development database, provided by Django.
 
 ### Data Models:
 
