@@ -119,7 +119,7 @@ These notes develop on the more interesting parts of the project
 
 <br>    
 
- **ChannelManager**:
+ **ChannelManager**
 - Custom model manager to retrieve and filter Channels.
 
     - `get_channels_by_group` filters a given queryset of Channels by a group name.
