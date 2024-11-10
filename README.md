@@ -193,7 +193,7 @@ Please note - in order to run this project locally on your own system, you will 
      ```
 10. Once the program is running, go to localhost and add `/admin/` to the end of the url. Here log in with the initial superuser account.
 
-11. Create env.py file at root level where you can store your sensitive information for the app. Add these details to that file:
+11. Create an .env file at root level where you can store your sensitive information for the app. Add these details to that file:
     ```
     SECRET_KEY = "SECRET_KEY"
     DEBUG = "DEBUG"
