@@ -4,7 +4,6 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models, transaction
 
 
-
 class Group(models.Model):
     title = models.CharField(max_length=250)
     active = models.BooleanField(default=True, null=True)
@@ -85,7 +84,6 @@ class Channel(models.Model):
         if self.superchannel:
             transaction.on_commit(self.add_group_to_superchannels)
 
-
     def get_all_superchannels(self, include_self=True):
         superchannel_list = []
         if include_self:
@@ -98,7 +96,6 @@ class Channel(models.Model):
 
         return superchannel_list
     
-
     def add_group_to_superchannels(self):
         if not self.groups.exists():
             return False
@@ -108,7 +105,6 @@ class Channel(models.Model):
 
         for channel_obj in channel_objs:
             channel_obj.groups.add(*self.groups.all())
-
 
 
 class Content(models.Model):
