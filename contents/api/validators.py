@@ -14,12 +14,12 @@ class UrlValidator:
     def check_url(slugs):     
         slug = slugs[0]
         try:
-            obj = Channel.objects.get(slug=slug)
+            obj = Channel.objects.get(slug=slug, active=True)
             UrlValidator.check_super_channels(obj, slugs)
             return obj
         except Channel.DoesNotExist:
             try:
-                obj = Content.objects.get(slug=slug)
+                obj = Content.objects.get(slug=slug, active=True)
                 parent = obj.channel
                 content_slugs = slugs[1:]
                 UrlValidator.check_super_channels(parent, content_slugs)

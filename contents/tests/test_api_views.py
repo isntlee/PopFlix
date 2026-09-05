@@ -49,3 +49,33 @@ class DetailViewTestCase(TestCase):
         Channel.objects.all().delete()
         Content.objects.all().delete()
 
+
+class ActiveFlagTestCase(TestCase):
+    def test_inactive_channel(self):
+        channel = Channel.objects.create(title="Hidden", active=False)
+        Content.objects.create(name="Buried", channel=channel)
+        response = self.client.get(reverse('list_view', kwargs={'path': channel.slug, 'group': ''}))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_active_channel(self):
+        channel = Channel.objects.create(title="Shown", active=True)
+        response = self.client.get(reverse('list_view', kwargs={'path': channel.slug, 'group': ''}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_inactive_content(self):
+        channel = Channel.objects.create(title="Open", active=True)
+        content = Content.objects.create(name="Secret", channel=channel, active=False)
+        path = channel.slug + '/' + content.slug
+        response = self.client.get(reverse('list_view', kwargs={'path': path, 'group': ''}))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_active_content(self):
+        channel = Channel.objects.create(title="Public", active=True)
+        content = Content.objects.create(name="Visible", channel=channel, active=True)
+        path = channel.slug + '/' + content.slug
+        response = self.client.get(reverse('list_view', kwargs={'path': path, 'group': ''}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def tearDown(self):
+        Channel.objects.all().delete()
+        Content.objects.all().delete()

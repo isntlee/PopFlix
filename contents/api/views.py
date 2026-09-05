@@ -70,4 +70,4 @@ class DetailView(generics.RetrieveAPIView):
         if pk is None:
             return self.get_queryset()[0]
         else:
-            return Content.objects.filter(pk=pk).first()
+            return Content.objects.filter(pk=pk, active=True).first()
